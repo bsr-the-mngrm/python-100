@@ -1,4 +1,5 @@
 import random
+from os import system
 from hangman_words import word_list
 from hangman_art import logo, stages
 
@@ -8,10 +9,10 @@ word_length = len(chosen_word)
 end_of_game = False
 lives = 6
 
-print(logo)
-
 #Testing code
 # print(f'Pssst, the solution is {chosen_word}.')
+
+print(logo)
 
 #Create blanks
 display = []
@@ -20,6 +21,10 @@ for _ in range(word_length):
 
 while not end_of_game:
     guess = input("Guess a letter: ").lower()
+
+    system('cls')
+
+    print(logo)
 
     # If the user has entered a letter they've already guessed, print the letter and let them know.
     if guess in display:
@@ -48,5 +53,4 @@ while not end_of_game:
         end_of_game = True
         print("You win.")
 
-    #TODO-2: - Import the stages from hangman_art.py and make this error go away.
     print(stages[lives])
