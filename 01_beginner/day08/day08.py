@@ -32,7 +32,7 @@ while wants_to_continue:
 
     result = input("Type 'yes' if you want to go again. Otherwise type 'no'.\n")
 
-    system('cls')
+    system('cls||clear')
     
     if result == "no":
        wants_to_continue = False
