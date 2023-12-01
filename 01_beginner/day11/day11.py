@@ -17,6 +17,125 @@
 ## Cards are not removed from the deck as they are drawn.
 ## The computer is the dealer.
 
+import random
+from os import system
+from art import logo
+
+cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+
+user_cards = []
+computer_cards = []
+user_score = None
+computer_score = None
+
+results = {0: "You win!", 1: "You lose!", 2: "Draw", 3: "No decision"}
+
+def deal_card():
+    """
+        Return a random card
+    """
+    return random.choice(cards)
+
+def init_hands():
+    """
+        Initialization  of user's and computer's hand - Everybody gets two cards.
+    """
+    user_cards.append(deal_card())
+    user_cards.append(deal_card())
+    computer_cards.append(deal_card())
+    computer_cards.append(deal_card())
+
+def sum_card_scores(cards):
+    """
+        Return the sum of the cards' scores.
+    """
+    sum = 0
+    for card in cards:
+        sum += card
+    return sum
+
+def computer_mind():
+    """
+        The intelligence of the computer's mind - Decide whether the computer should draw a card.
+    """
+    score = sum_card_scores(computer_cards)
+    if score > 12 and score < 20:
+        if random.randint(0,1):
+            computer_cards.append(deal_card())
+            return True
+    elif score < 12:
+        computer_cards.append(deal_card())
+        return True
+    
+    return False
+
+def final():
+    """
+        Compute the result
+    """
+    if user_score <= 21 and computer_score <= 21:
+        if user_score > computer_score:
+            return 0
+        elif user_score < computer_score:
+            return 1
+        elif user_score == computer_score:
+            return 2
+    elif user_score <= 21 and computer_score > 21:
+        return 0
+    elif user_score > 21 and computer_score <= 21:
+        return 1
+    elif user_score > 21 and computer_score > 21:
+        return 2
+
+    return 3
+
+
+wants_to_play = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ")
+
+while wants_to_play.lower() == 'y':
+
+    system("cls||clear")
+
+    print(logo)
+
+    user_cards = []
+    computer_cards = []
+    
+    should_continue = True
+
+    init_hands()
+
+    while should_continue:
+        print(f"Your cards: {user_cards}")
+        print(f"Computer's first card: {computer_cards[0]}")
+
+        user_decision = input("Type 'y' to get another card, type 'n' to pass: ")
+
+        computer_decision = computer_mind()
+
+        if user_decision == 'y':
+            user_cards.append(deal_card())
+
+        user_score = sum_card_scores(user_cards)
+        computer_score = sum_card_scores(computer_cards)
+
+        if (user_score >= 20 and computer_score >= 20) or (user_decision != 'y' and not computer_decision):
+            should_continue = False
+
+    result = final()
+
+    print("\nResults:")
+    print(f"Your cards: {user_cards}")
+    print(f"Computer's cards: {computer_cards}")
+    print(results[result])
+
+    wants_to_play = input("Do you want to play a game of Blackjack again? Type 'y' or 'n': ")
+
+
+
+
+
+
 ##################### Hints #####################
 
 #Hint 1: Go to this website and try out the Blackjack game: 
