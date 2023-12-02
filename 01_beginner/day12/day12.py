@@ -2,6 +2,9 @@ from art import logo
 from os import system
 import random
 
+EASY_LEVEL_ATTEMPTS = 10
+HARD_LEVEL_ATTEMPTS = 5
+
 def input_difficulty():
     """Returns the user's difficulty choice"""
     input_str = "Choose a difficulty. Type 'easy' or 'hard': "
@@ -49,9 +52,9 @@ def play_game():
     difficulty = input_difficulty()
 
     if difficulty == "easy":
-        attempts = 10
+        attempts = EASY_LEVEL_ATTEMPTS
     elif difficulty == "hard":
-        attempts = 5
+        attempts = HARD_LEVEL_ATTEMPTS
 
     while attempts != 0 and not is_guessed:
         print(f"You have {attempts} attempts remaining to guess the number.")
