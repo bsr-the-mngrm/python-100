@@ -24,7 +24,10 @@ def display_final(a_entity, b_entity, score):
     system("cls||clear")
     
     print(logo)
-    print(f"Wrong answer!\n{a_entity['name']} has {a_entity['follower_count']} followers vs. {b_entity['name']} has {b_entity['follower_count']}\n")
+    if score != LENGTH_OF_DATA-1:
+        print(f"Wrong answer!\n{a_entity['name']} has {a_entity['follower_count']} followers vs. {b_entity['name']} has {b_entity['follower_count']}\n")
+    else:
+        print(f"Wow! You did it! Guessed out everything!")
     print(f"Your final score is {score}\n")
 
 def input_answer():
@@ -73,7 +76,7 @@ def play_game():
     #initialization of list of selected entities
     list_of_selected_entities.append(get_the_next_entity(list_of_selected_entities))
 
-    while is_higher:
+    while is_higher and score != LENGTH_OF_DATA-1:
         list_of_selected_entities.append(get_the_next_entity(list_of_selected_entities))
 
         lenght_of_list_of_selected_entities = len(list_of_selected_entities)
