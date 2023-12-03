@@ -104,6 +104,7 @@ def check_transaction(drink, inserted_money):
     else:
         return False
 
+
 def process_coins():
     quarters = int(input("How many quarters do you give? "))
     dimes = int(input("How many dimes do you give? "))
