@@ -64,7 +64,7 @@ def make_coffee(choice):
     if is_resources_sufficient(MENU[choice]['ingredients']):
         inserted_money = process_coins()
 
-        if check_transaction(choice, inserted_money):
+        if is_transaction_successful(choice, inserted_money):
             money += MENU[choice]['cost']
 
             return_money = inserted_money - MENU[choice]['cost']
@@ -88,7 +88,7 @@ def is_resources_sufficient(order_ingredients):
     return is_enough
 
 
-def check_transaction(drink, inserted_money):
+def is_transaction_successful(drink, inserted_money):
     """Returns true or false depends on whether inserted money is enough for the chosen drink or not"""
     if inserted_money >= MENU[drink]['cost']:
         return True
