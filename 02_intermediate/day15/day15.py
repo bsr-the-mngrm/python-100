@@ -58,24 +58,10 @@ def report():
     print(f"Money: ${money}")
 
 
-def make_coffee(choice):
-    global money
-
-    if is_resources_sufficient(MENU[choice]['ingredients']):
-        inserted_money = process_coins()
-
-        if is_transaction_successful(choice, inserted_money):
-            money += MENU[choice]['cost']
-
-            return_money = inserted_money - MENU[choice]['cost']
-            print(f"Here is ${round(return_money,2)} dollars in change.")
-
-            resources['water'] -= MENU[choice]['ingredients']['water']
-            resources['coffee'] -= MENU[choice]['ingredients']['coffee']
-            if choice != 'espresso':
-                resources['milk'] -= MENU[choice]['ingredients']['milk']
-        else:
-            print("Sorry that's not enough money. Money refunded.")
+def make_coffee(order_ingredients):
+    """Deduct the required ingredients from the resources."""
+    for item in order_ingredients:
+        resources[item] -= order_ingredients[item]
 
 
 def is_resources_sufficient(order_ingredients):
@@ -117,7 +103,20 @@ def coffee_machine():
         elif choice == "report":
             report()
         else:
-            make_coffee(choice=choice)
+            if is_resources_sufficient(MENU[choice]['ingredients']):
+                inserted_money = process_coins()
+
+                if is_transaction_successful(choice, inserted_money):
+                    global money
+                    money += MENU[choice]['cost']
+
+                    return_money = inserted_money - MENU[choice]['cost']
+                    print(f"Here is ${round(return_money, 2)} dollars in change.")
+
+                    make_coffee(MENU[choice]['ingredients'])
+                    print(f"Here is your {choice}. ☕")
+                else:
+                    print("Sorry that's not enough money. Money refunded.")
 
 
 coffee_machine()
