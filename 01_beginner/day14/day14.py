@@ -56,12 +56,10 @@ def get_the_next_entity(list_of_selected_entities):
 
 def compare(a_entity, b_entity, answer):
     """Returns Higher (True) or Lower (False) depends on the right answer"""
-    if a_entity['follower_count'] > b_entity['follower_count'] and answer == 'A':
-        return True
-    elif a_entity['follower_count'] < b_entity['follower_count'] and answer == 'B':
-        return True
+    if a_entity['follower_count'] > b_entity['follower_count']:
+        return answer == 'A'
     else:
-        return False
+        return answer == 'B'
 
 def play_game():
     """Play Higher/Lower game"""
