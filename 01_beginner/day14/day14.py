@@ -27,7 +27,7 @@ def display_final(a_entity, b_entity, score):
     if score != LENGTH_OF_DATA-1:
         print(f"Wrong answer!\n{a_entity['name']} has {a_entity['follower_count']} followers vs. {b_entity['name']} has {b_entity['follower_count']}\n")
     else:
-        print(f"Wow! You did it! Guessed out everything!")
+        print(f"Wow! You did it! Guessed out everything!\n")
     print(f"Your final score is {score}\n")
 
 def input_answer():
