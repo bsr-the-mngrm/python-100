@@ -60,9 +60,8 @@ def report():
 
 def make_coffee(choice):
     global money
-    check_resource = check_resources_sufficient(choice)
 
-    if check_resource == 'enough':
+    if is_resources_sufficient(MENU[choice]['ingredients']):
         inserted_money = process_coins()
 
         if check_transaction(choice, inserted_money):
@@ -77,24 +76,16 @@ def make_coffee(choice):
                 resources['milk'] -= MENU[choice]['ingredients']['milk']
         else:
             print("Sorry that's not enough money. Money refunded.")
-    else:
-        print(check_resource)
 
 
-def check_resources_sufficient(drink):
-    if not resources['water'] < MENU[drink]['ingredients']['water']:
-        if not resources['coffee'] < MENU[drink]['ingredients']['coffee']:
-            if drink != 'espresso':
-                if not resources['milk'] < MENU[drink]['ingredients']['milk']:
-                    return 'enough'
-                else:
-                    return 'Sorry there is not enough milk.'
-            else:
-                return 'enough'
-        else:
-            return 'Sorry there is not enough coffee.'
-    else:
-        return 'Sorry there is not enough water.'
+def is_resources_sufficient(order_ingredients):
+    is_enough = True
+    for item in order_ingredients:
+        if order_ingredients[item] > resources[item]:
+            print(f"Sorry there is not enough {item}.")
+            is_enough = False
+
+    return is_enough
 
 
 def check_transaction(drink, inserted_money):
