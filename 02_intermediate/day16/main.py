@@ -18,8 +18,8 @@ if __name__ == '__main__':
         elif user_input != "off":
             user_drink = my_menu.find_drink(user_input)
 
-            if user_drink is not None:
-                if my_coffee_maker.is_resource_sufficient(user_drink):
-                    if my_money_machine.make_payment(user_drink.cost):
-                        my_coffee_maker.make_coffee(user_drink)
+            if (user_drink is not None
+                    and my_coffee_maker.is_resource_sufficient(user_drink)
+                    and my_money_machine.make_payment(user_drink.cost)):
+                my_coffee_maker.make_coffee(user_drink)
 
