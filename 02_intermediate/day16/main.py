@@ -10,4 +10,16 @@ if __name__ == '__main__':
     user_input = ""
 
     while user_input != "off":
-        user_input = input()
+        user_input = input(f"What would you like? ({my_menu.get_items()}): ")
+        user_drink = None
+
+        if user_input == "report":
+            my_coffee_maker.report()
+            my_money_machine.report()
+        elif user_input != "off":
+            user_drink = my_menu.find_drink(user_input)
+
+            if my_coffee_maker.is_resource_sufficient(user_drink):
+                if my_money_machine.make_payment(user_drink.cost):
+                    my_coffee_maker.make_coffee(user_drink)
+
