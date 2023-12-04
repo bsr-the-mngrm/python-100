@@ -11,7 +11,6 @@ if __name__ == '__main__':
 
     while user_input != "off":
         user_input = input(f"What would you like? ({my_menu.get_items()}): ")
-        user_drink = None
 
         if user_input == "report":
             my_coffee_maker.report()
