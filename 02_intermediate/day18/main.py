@@ -1,16 +1,20 @@
 import turtle as t
+import random
 
-timmy_the_turtle = t.Turtle()
-timmy_the_turtle.shape("turtle")
-timmy_the_turtle.color("red")
-timmy_the_turtle.forward(100)
-timmy_the_turtle.right(90)
-timmy_the_turtle.forward(100)
-timmy_the_turtle.right(90)
-timmy_the_turtle.forward(100)
-timmy_the_turtle.right(90)
-timmy_the_turtle.forward(100)
-timmy_the_turtle.right(90)
+tim = t.Turtle()
+
+turtle_colors = ["azure", "lime green", "forest green", "olive", "gold", "wheat", "firebrick", "deep pink", "purple",
+                 "blue violet", "lavender", "slate blue", "gray", "deep sky blue", "sienna"]
+
+directions = [0, 90, 180, 270]
+
+tim.pensize(10)
+tim.speed("fastest")
+
+for _ in range(200):
+    tim.color(random.choice(turtle_colors))
+    tim.setheading(random.choice(directions))
+    tim.forward(20)
 
 screen = t.Screen()
 screen.exitonclick()
