@@ -1,10 +1,13 @@
 import turtle as t
 import random
+import colorgram
 
 tim = t.Turtle()
 t.colormode(255)
 
+colors = colorgram.extract('image.jpg',25)
 
-
-screen = t.Screen()
-screen.exitonclick()
+print(colors)
+#
+# screen = t.Screen()
+# screen.exitonclick()
