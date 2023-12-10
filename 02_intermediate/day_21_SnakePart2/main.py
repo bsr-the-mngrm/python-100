@@ -38,3 +38,9 @@ if __name__ == '__main__':
         if my_snake.head.distance(food) < 15:
             scoreboard.increase_score()
             food.refresh()
+
+        # Detect collision with wall
+        if (my_snake.head.xcor() > 280 or my_snake.head.xcor() < -280
+                or my_snake.head.ycor() > 280 or my_snake.head.ycor() < -280):
+            my_snake.stop_game()
+            
