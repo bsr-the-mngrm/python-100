@@ -2,6 +2,10 @@ import turtle as t
 
 STARTING_POSITIONS = [(0, 0), (-20, 0), (-40, 0)]
 MOVE_DISTANCE = 20
+UP = 90
+DOWN = 270
+LEFT = 180
+RIGHT = 0
 
 
 class Snake:
@@ -31,22 +35,27 @@ class Snake:
 
     def move_up(self):
         """Move snake forward"""
-        self.head.setheading(90)
+        if self.head.heading() != DOWN:
+            self.head.setheading(UP)
+
         self.move()
 
     def move_down(self):
         """Move snake forward"""
-        self.head.setheading(270)
+        if self.head.heading() != UP:
+            self.head.setheading(DOWN)
         self.move()
 
     def move_right(self):
         """Turn snake right"""
-        self.head.setheading(0)
+        if self.head.heading() != LEFT:
+            self.head.setheading(RIGHT)
         self.move()
 
     def move_left(self):
         """Turn snake left"""
-        self.head.setheading(180)
+        if self.head.heading() != RIGHT:
+            self.head.setheading(LEFT)
         self.move()
 
     def stop_game(self):
