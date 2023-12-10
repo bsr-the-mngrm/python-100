@@ -10,6 +10,7 @@ class Snake:
         for i in range(self.size):
             new_snake_part = t.Turtle(shape="square")
             new_snake_part.color("white")
+            new_snake_part.penup()
             new_xcor = 0 - 20 * i
             new_snake_part.goto(x=new_xcor, y=0)
             self.snake_body.append(new_snake_part)
