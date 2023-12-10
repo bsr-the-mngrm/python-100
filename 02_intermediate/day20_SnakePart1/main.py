@@ -17,6 +17,9 @@ if __name__ == '__main__':
     screen.listen()
 
     while my_snake.game_is_on:
+        screen.update()
+        time.sleep(0.1)
+
         screen.onkey(key="w", fun=my_snake.move_up)
         screen.onkey(key="a", fun=my_snake.move_left)
         screen.onkey(key="s", fun=my_snake.move_down)
@@ -24,6 +27,3 @@ if __name__ == '__main__':
         screen.onkey(key="Escape", fun=my_snake.stop_game)
 
         my_snake.move()
-
-        time.sleep(0.1)
-        screen.update()
