@@ -1,6 +1,7 @@
 from turtle import Screen
 from snake import Snake
 from food import Food
+from scoreboard import Scoreboard
 import time
 
 
@@ -13,6 +14,7 @@ if __name__ == '__main__':
 
     my_snake = Snake()
     food = Food()
+    scoreboard = Scoreboard()
 
     screen.update()
 
