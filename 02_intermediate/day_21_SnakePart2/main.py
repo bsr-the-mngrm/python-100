@@ -46,10 +46,8 @@ if __name__ == '__main__':
             scoreboard.game_over()
 
         # Detect collision with tail.
-        for segment in my_snake.snake_body:
-            if segment == my_snake.head:
-                pass
-            elif my_snake.head.distance(segment) < 10:
+        for segment in my_snake.snake_body[1:]:
+            if my_snake.head.distance(segment) < 10:
                 scoreboard.game_over()
 
     screen.onkey(key="Escape", fun=bye)
