@@ -25,9 +25,12 @@ if __name__ == '__main__':
 
     while my_snake.game_is_on:
         screen.update()
-        time.sleep(0.15)
+        time.sleep(0.10)
 
-        my_snake.move()
+        if not my_snake.move_skip:
+            my_snake.move()
+        else:
+            my_snake.move_skip = False
 
         # Detect collision with food
         if my_snake.head.distance(food) < 15:
