@@ -16,6 +16,7 @@ class Snake:
         self.snake_body = []
         self.__create_snake()
         self.head = self.snake_body[0]
+        self.move_skip = False
 
     def __create_snake(self):
         for position in STARTING_POSITIONS:
@@ -37,26 +38,29 @@ class Snake:
         """Move snake forward"""
         if self.head.heading() != DOWN:
             self.head.setheading(UP)
-
         self.move()
+        self.move_skip = True
 
     def move_down(self):
         """Move snake forward"""
         if self.head.heading() != UP:
             self.head.setheading(DOWN)
         self.move()
+        self.move_skip = True
 
     def move_right(self):
         """Turn snake right"""
         if self.head.heading() != LEFT:
             self.head.setheading(RIGHT)
         self.move()
+        self.move_skip = True
 
     def move_left(self):
         """Turn snake left"""
         if self.head.heading() != RIGHT:
             self.head.setheading(LEFT)
         self.move()
+        self.move_skip = True
 
     def stop_game(self):
         self.game_is_on = False
