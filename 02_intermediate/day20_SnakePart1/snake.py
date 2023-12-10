@@ -21,7 +21,7 @@ class Snake:
             new_snake_part.goto(position)
             self.snake_body.append(new_snake_part)
 
-    def __move(self):
+    def move(self):
         """Move snake body parts"""
         for body_part_num in range(len(self.snake_body)-1, 0, -1):
             new_x = self.snake_body[body_part_num-1].xcor()
@@ -32,22 +32,22 @@ class Snake:
     def move_up(self):
         """Move snake forward"""
         self.head.setheading(90)
-        self.__move()
+        self.move()
 
     def move_down(self):
         """Move snake forward"""
         self.head.setheading(270)
-        self.__move()
+        self.move()
 
     def move_right(self):
         """Turn snake right"""
         self.head.setheading(0)
-        self.__move()
+        self.move()
 
     def move_left(self):
         """Turn snake left"""
         self.head.setheading(180)
-        self.__move()
+        self.move()
 
     def stop_game(self):
         self.game_is_on = False
