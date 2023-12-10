@@ -1,14 +1,16 @@
 import turtle as t
 
+STARTING_POSITIONS = [(0, 0), (-20, 0), (-40, 0)]
+MOVE_DISTANCE = 20
+
 
 class Snake:
     """Snake class is the definition of snake in My Snake Game"""
 
-    starting_positions = [(0, 0), (-20, 0), (-40, 0)]
-
     def __init__(self):
+        self.game_is_on = True
         self.snake_body = []
-        for position in Snake.starting_positions:
+        for position in STARTING_POSITIONS:
             new_snake_part = t.Turtle(shape="square")
             new_snake_part.color("white")
             new_snake_part.penup()
@@ -25,17 +27,19 @@ class Snake:
     def move_forward(self):
         """Move snake forward"""
         self.__move()
-        self.snake_body[0].forward(20)
+        self.snake_body[0].forward(MOVE_DISTANCE)
 
     def move_right(self):
         """Turn snake right"""
         self.__move()
         self.snake_body[0].right(90)
-        self.snake_body[0].forward(20)
-
+        self.snake_body[0].forward(MOVE_DISTANCE)
 
     def move_left(self):
         """Turn snake left"""
         self.__move()
         self.snake_body[0].left(90)
-        self.snake_body[0].forward(20)
+        self.snake_body[0].forward(MOVE_DISTANCE)
+
+    def stop_game(self):
+        self.game_is_on = False
