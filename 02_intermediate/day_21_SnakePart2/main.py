@@ -37,6 +37,7 @@ if __name__ == '__main__':
         # Detect collision with food
         if my_snake.head.distance(food) < 15:
             scoreboard.increase_score()
+            my_snake.extend()
             food.refresh()
 
         # Detect collision with wall
