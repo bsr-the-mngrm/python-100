@@ -12,7 +12,6 @@ class Snake:
     """Snake class is the definition of snake in My Snake Game"""
 
     def __init__(self):
-        self.game_is_on = True
         self.snake_body = []
         self.__create_snake()
         self.head = self.snake_body[0]
@@ -61,6 +60,3 @@ class Snake:
             self.head.setheading(LEFT)
         self.move()
         self.move_skip = True
-
-    def game_over(self):
-        self.game_is_on = False

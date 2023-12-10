@@ -1,4 +1,4 @@
-from turtle import Screen
+from turtle import Screen, bye
 from snake import Snake
 from food import Food
 from scoreboard import Scoreboard
@@ -23,9 +23,9 @@ if __name__ == '__main__':
     screen.onkey(key="a", fun=my_snake.move_left)
     screen.onkey(key="s", fun=my_snake.move_down)
     screen.onkey(key="d", fun=my_snake.move_right)
-    screen.onkey(key="Escape", fun=my_snake.game_over)
+    screen.onkey(key="Escape", fun=scoreboard.game_over)
 
-    while my_snake.game_is_on:
+    while scoreboard.game_is_on:
         screen.update()
         time.sleep(0.10)
 
@@ -42,4 +42,7 @@ if __name__ == '__main__':
         # Detect collision with wall
         if (my_snake.head.xcor() > 280 or my_snake.head.xcor() < -280
                 or my_snake.head.ycor() > 280 or my_snake.head.ycor() < -280):
-            my_snake.game_over()
+            scoreboard.game_over()
+
+    screen.onkey(key="Escape", fun=bye)
+    screen.exitonclick()
