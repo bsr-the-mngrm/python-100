@@ -62,5 +62,5 @@ class Snake:
         self.move()
         self.move_skip = True
 
-    def stop_game(self):
+    def game_over(self):
         self.game_is_on = False

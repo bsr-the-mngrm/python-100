@@ -23,7 +23,7 @@ if __name__ == '__main__':
     screen.onkey(key="a", fun=my_snake.move_left)
     screen.onkey(key="s", fun=my_snake.move_down)
     screen.onkey(key="d", fun=my_snake.move_right)
-    screen.onkey(key="Escape", fun=my_snake.stop_game)
+    screen.onkey(key="Escape", fun=my_snake.game_over)
 
     while my_snake.game_is_on:
         screen.update()
@@ -42,5 +42,4 @@ if __name__ == '__main__':
         # Detect collision with wall
         if (my_snake.head.xcor() > 280 or my_snake.head.xcor() < -280
                 or my_snake.head.ycor() > 280 or my_snake.head.ycor() < -280):
-            my_snake.stop_game()
-            
+            my_snake.game_over()
