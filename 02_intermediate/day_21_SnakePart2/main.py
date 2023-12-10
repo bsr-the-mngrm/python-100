@@ -28,3 +28,7 @@ if __name__ == '__main__':
         time.sleep(0.1)
 
         my_snake.move()
+
+        # Detect collision with food
+        if my_snake.head.distance(food) < 15:
+            print("nom nom nom")
