@@ -2,6 +2,7 @@ import turtle as t
 import snake as s
 import time
 
+
 if __name__ == '__main__':
     screen = t.Screen()
     screen.setup(width=600, height=600)
@@ -13,11 +14,12 @@ if __name__ == '__main__':
 
     screen.update()
 
-    game_is_on = True
+    screen.listen()
 
-    while game_is_on:
-        my_snake.move_forward()
-        time.sleep(0.2)
+    while my_snake.game_is_on:
+        screen.onkey(key="w", fun=my_snake.move_forward)
+        screen.onkey(key="a", fun=my_snake.move_left)
+        screen.onkey(key="d", fun=my_snake.move_right)
+        screen.onkey(key="Escape", fun=my_snake.stop_game)
+
         screen.update()
-
-    screen.exitonclick()
