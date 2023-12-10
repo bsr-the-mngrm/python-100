@@ -14,3 +14,16 @@ class Snake:
             new_snake_part.penup()
             new_snake_part.goto(position)
             self.snake_body.append(new_snake_part)
+
+    def move_forward(self):
+        """Move snake forward"""
+        for body_part in self.snake_body:
+            body_part.forward(20)
+
+    def move_right(self):
+        """Turn snake right"""
+        pass
+
+    def move_left(self):
+        """Turn snake left"""
+        pass
