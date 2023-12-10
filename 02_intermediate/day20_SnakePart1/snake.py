@@ -24,21 +24,28 @@ class Snake:
             new_y = self.snake_body[body_part_num-1].ycor()
             self.snake_body[body_part_num].goto(x=new_x, y=new_y)
 
-    def move_forward(self):
+    def move_up(self):
         """Move snake forward"""
         self.__move()
+        self.snake_body[0].setheading(90)
+        self.snake_body[0].forward(MOVE_DISTANCE)
+
+    def move_down(self):
+        """Move snake forward"""
+        self.__move()
+        self.snake_body[0].setheading(270)
         self.snake_body[0].forward(MOVE_DISTANCE)
 
     def move_right(self):
         """Turn snake right"""
         self.__move()
-        self.snake_body[0].right(90)
+        self.snake_body[0].setheading(0)
         self.snake_body[0].forward(MOVE_DISTANCE)
 
     def move_left(self):
         """Turn snake left"""
         self.__move()
-        self.snake_body[0].left(90)
+        self.snake_body[0].setheading(180)
         self.snake_body[0].forward(MOVE_DISTANCE)
 
     def stop_game(self):
