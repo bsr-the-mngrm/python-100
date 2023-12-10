@@ -23,4 +23,7 @@ if __name__ == '__main__':
         screen.onkey(key="d", fun=my_snake.move_right)
         screen.onkey(key="Escape", fun=my_snake.stop_game)
 
+        my_snake.move()
+
+        time.sleep(0.1)
         screen.update()
