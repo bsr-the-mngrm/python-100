@@ -1,5 +1,6 @@
 from turtle import Screen, bye
-from paddle import Paddle
+from paddle import Paddle, ComputerPaddle
+import time
 
 PLAYER_PADDLE_POSITION = (350, 0)
 COMPUTER_PADDLE_POSITION = (-350, 0)
@@ -11,7 +12,7 @@ if __name__ == '__main__':
     screen.title("Pong")
 
     my_paddle = Paddle(PLAYER_PADDLE_POSITION)
-    computer_paddle = Paddle(COMPUTER_PADDLE_POSITION)
+    computer_paddle = ComputerPaddle(COMPUTER_PADDLE_POSITION)
 
     screen.tracer(0)
 
@@ -22,6 +23,9 @@ if __name__ == '__main__':
 
     while my_paddle.game_is_on:
         screen.update()
+        time.sleep(0.1)
+
+        computer_paddle.move()
 
     screen.onkey(bye, "Escape")
     screen.exitonclick()
