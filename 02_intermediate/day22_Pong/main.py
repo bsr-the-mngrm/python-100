@@ -1,5 +1,6 @@
 from turtle import Screen, bye
 from paddle import Paddle, ComputerPaddle
+from ball import Ball
 import time
 
 PLAYER_PADDLE_POSITION = (350, 0)
@@ -13,6 +14,7 @@ if __name__ == '__main__':
 
     my_paddle = Paddle(PLAYER_PADDLE_POSITION)
     computer_paddle = ComputerPaddle(COMPUTER_PADDLE_POSITION)
+    ball = Ball()
 
     screen.tracer(0)
 
@@ -25,6 +27,7 @@ if __name__ == '__main__':
         screen.update()
         time.sleep(0.1)
 
+        ball.move()
         computer_paddle.move()
 
     screen.onkey(bye, "Escape")
