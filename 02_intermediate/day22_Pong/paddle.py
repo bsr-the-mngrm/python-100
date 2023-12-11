@@ -1,42 +1,36 @@
 from turtle import Turtle
 
-UP = 90
-DOWN = 270
-STEP_DISTANCE = 50
-
 
 class Paddle(Turtle):
 
-    def __init__(self, position: tuple[float, float]):
-        super().__init__(shape="square")
+    def __init__(self, position):
+        super().__init__()
+        self.shape("square")
         self.color("white")
-        self.shapesize(stretch_wid=1, stretch_len=5, outline=None)
+        self.shapesize(stretch_wid=5, stretch_len=1)
         self.penup()
         self.goto(position)
-        self.setheading(DOWN)
-
-        self.game_is_on = True
 
     def go_up(self):
-        self.setheading(UP)
-        self.forward(STEP_DISTANCE)
+        new_y = self.ycor() + 20
+        self.goto(self.xcor(), new_y)
 
     def go_down(self):
-        self.setheading(DOWN)
-        self.forward(STEP_DISTANCE)
-
-    def game_over(self):
-        self.game_is_on = False
+        new_y = self.ycor() - 20
+        self.goto(self.xcor(), new_y)
 
 
 class ComputerPaddle(Paddle):
 
     def __init__(self, position: tuple[float, float]):
         super().__init__(position)
+        self.y_move = 20
 
     def move(self):
-        self.forward(STEP_DISTANCE)
-        if self.heading() == DOWN and self.ycor() < -200:
-            self.setheading(UP)
-        elif self.heading() == UP and self.ycor() > 200:
-            self.setheading(DOWN)
+        if self.y_move < 0 and self.ycor() < -200:
+            self.y_move *= -1
+        elif self.y_move > 0 and self.ycor() > 200:
+            self.y_move *= -1
+
+        new_y = self.ycor() + self.y_move
+        self.goto(self.xcor(), new_y)
