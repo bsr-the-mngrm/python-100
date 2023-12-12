@@ -1,7 +1,8 @@
 from turtle import Turtle
 
 FONT = ("Courier", 24, "normal")
-LEVEL_POSITION = (-250, 280)
+LEVEL_POSITION = (-210, 250)
+
 
 class Scoreboard(Turtle):
 
