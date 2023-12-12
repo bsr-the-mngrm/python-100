@@ -25,3 +25,11 @@ while game_is_on:
     if player.check_finish_line():
         scoreboard.update_level()
         player.update_level()
+        car_manager.update_level()
+
+    # Detect Turtle and Car collision
+    if car_manager.check_collision(player):
+        scoreboard.game_over()
+        game_is_on = False
+
+screen.exitonclick()
