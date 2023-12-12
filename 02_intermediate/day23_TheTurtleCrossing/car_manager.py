@@ -12,14 +12,14 @@ class CarManager:
         self.cars = []
         for _ in range(28):
             new_car = Car()
-            new_x = random.randint(320, 400)
-            new_y = random.randint(-270, 270)
-            new_car.goto(new_x, new_y)
             self.cars.append(new_car)
 
     def moving_cars(self):
         for car in self.cars:
-            car.move()
+            if car.xcor() > -320:
+                car.move()
+            else:
+                car.setup_position()
 
 
 class Car(Turtle):
@@ -29,7 +29,13 @@ class Car(Turtle):
         self.shapesize(stretch_wid=1, stretch_len=2)
         self.color(random.choice(COLORS))
         self.penup()
+        self.setup_position()
         self.move_distance = STARTING_MOVE_DISTANCE
+
+    def setup_position(self):
+        new_x = random.randint(320, 400)
+        new_y = random.randint(-270, 270)
+        self.goto(new_x, new_y)
 
     def move(self):
         new_x = self.xcor() + self.move_distance
