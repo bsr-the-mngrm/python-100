@@ -41,8 +41,8 @@ if __name__ == '__main__':
             food.refresh()
 
         # Detect collision with wall
-        if (my_snake.head.xcor() > 280 or my_snake.head.xcor() < -280
-                or my_snake.head.ycor() > 280 or my_snake.head.ycor() < -280):
+        if (my_snake.head.xcor() > 290 or my_snake.head.xcor() < -290
+                or my_snake.head.ycor() > 290 or my_snake.head.ycor() < -290):
             scoreboard.game_over()
 
         # Detect collision with tail.
