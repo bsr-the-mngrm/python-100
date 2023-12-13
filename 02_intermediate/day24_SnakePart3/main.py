@@ -53,6 +53,5 @@ if __name__ == '__main__':
                 my_snake.reset()
 
     screen.onkey(key="Escape", fun=bye)
-    screen.onkey(key="Return", fun=scoreboard.reset)
 
     screen.exitonclick()
