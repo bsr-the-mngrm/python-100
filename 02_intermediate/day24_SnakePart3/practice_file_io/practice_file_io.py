@@ -19,8 +19,12 @@
 #     new_content = "\nNext text."
 #     file.write(new_content)
 
-# TASK 5
+# # TASK 5
+# with open("new_text.txt", mode="w") as file:
+#     new_content = "New text."
+#     file.write(new_content)
+
+# TASK 6
 with open("new_text.txt", mode="w") as file:
     new_content = "New text."
     file.write(new_content)
-
