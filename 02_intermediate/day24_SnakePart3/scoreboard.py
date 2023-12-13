@@ -12,6 +12,7 @@ class Scoreboard(Turtle):
         super().__init__()
         self.game_is_on = True
         self.score = 0
+        self.high_score = self.load_highscore()
 
         self.hideturtle()
         self.penup()
@@ -21,13 +22,27 @@ class Scoreboard(Turtle):
 
     def update_scoreboard(self):
         self.clear()
-        self.write(f"Score: {self.score}", align=ALIGNMENT, font=FONT)
+        self.write(f"Score: {self.score}\tHigh score: {self.high_score}", align=ALIGNMENT, font=FONT)
 
     def increase_score(self):
         self.score += 1
         self.update_scoreboard()
 
+    def reset(self):
+        if self.score > self.high_score:
+            self.high_score = self.score
+            self.write_highscore(self.high_score)
+        self.score = 0
+        self.update_scoreboard()
+
+    def write_highscore(self, score):
+        pass
+
     def game_over(self):
         self.game_is_on = False
         self.home()
         self.write("GAME OVER", align=ALIGNMENT, font=FONT)
+
+    @staticmethod
+    def load_highscore():
+        return 0
