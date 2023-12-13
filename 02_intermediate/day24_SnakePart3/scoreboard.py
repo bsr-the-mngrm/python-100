@@ -37,15 +37,17 @@ class Scoreboard(Turtle):
         self.update_scoreboard()
 
     def write_highscore(self, score):
-        pass
+        with open("data.txt", mode="w") as file:
+            file.write(f"{self.high_score}")
 
     def game_over(self):
         self.game_is_on = False
         self.home()
         self.write("GAME OVER", align=ALIGNMENT, font=FONT)
         self.goto(0, -20)
-        self.write("(press 'Esc' to exit or press 'Enter' to continue)", align=ALIGNMENT, font=FONT2)
+        self.write("(press 'Esc' to exit)", align=ALIGNMENT, font=FONT2)
 
     @staticmethod
     def load_highscore():
-        return 0
+        with open("data.txt") as file:
+            return int(file.read())
