@@ -66,3 +66,10 @@ class Snake:
             self.head.setheading(LEFT)
         self.move()
         self.move_skip = True
+
+    def reset(self):
+        for snake_body_part in self.snake_body:
+            snake_body_part.goto(1000, 1000)
+        self.snake_body.clear()
+        self.__create_snake()
+        self.head = self.snake_body[0]
