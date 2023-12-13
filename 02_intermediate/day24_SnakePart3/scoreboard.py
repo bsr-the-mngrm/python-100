@@ -2,6 +2,7 @@ from turtle import Turtle
 
 ALIGNMENT = "center"
 FONT = ("Courier", 20, "normal")
+FONT2 = ("Courier", 12, "normal")
 COLOR = "white"
 POSITION = (0, 270)
 
@@ -42,6 +43,8 @@ class Scoreboard(Turtle):
         self.game_is_on = False
         self.home()
         self.write("GAME OVER", align=ALIGNMENT, font=FONT)
+        self.goto(0, -20)
+        self.write("(press 'Esc' to exit or press 'Enter' to continue)", align=ALIGNMENT, font=FONT2)
 
     @staticmethod
     def load_highscore():
