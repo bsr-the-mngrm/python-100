@@ -20,7 +20,7 @@ if __name__ == '__main__':
     states = data["state"].to_list()
     number_of_states = len(states)
     guessed_states = []
-    number_of_guessed_states = 50 #len(guessed_states)
+    number_of_guessed_states = len(guessed_states)
     answer_state = ""
 
     state_writer = turtle.Turtle()
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     # x = new_york.x.iloc[0]
     # print(x)
 
-    while number_of_guessed_states != number_of_states and answer_state != "exit":
+    while number_of_guessed_states != number_of_states and answer_state != "Exit":
         answer_state = screen.textinput(title=f"{number_of_guessed_states}/{number_of_states} States Correct",
                                         prompt="What's another state's name?").title()
 
@@ -51,5 +51,12 @@ if __name__ == '__main__':
         name_of_winner = screen.textinput(title="Game Over", prompt="Congrats! Save your name in the winner's list:")
         with open("csv/50_states_winners.csv", mode="a") as file:
             file.write(f"{name_of_winner}\n")
+    else:
+        missing_states = []
+        for state in states:
+            if state not in guessed_states:
+                missing_states.append(state)
+        new_data = pandas.DataFrame(missing_states)
+        new_data.to_csv("csv/50_states_missing_states")
 
     # screen.exitonclick()
