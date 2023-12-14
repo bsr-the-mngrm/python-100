@@ -60,13 +60,33 @@
 # monday_temp_F = monday_temp * 9/5 + 32
 # print(monday_temp_F)
 
-# TASK 6 - Create a dataframe from scratch
+# # TASK 6 - Create a dataframe from scratch
+# import pandas
+#
+# data_dict = {
+#     "students": ["Amy", "James", "Angela"],
+#     "scores": [76, 50, 100]
+# }
+#
+# data = pandas.DataFrame(data_dict)
+# data.to_csv("csv/new_data.csv")
+
+# TASK 7 - Squirrel count
 import pandas
 
-data_dict = {
-    "students": ["Amy", "James", "Angela"],
-    "scores": [76, 50, 100]
+df = pandas.read_csv("csv/2018_Central_Park_Squirrel_Census_-_Squirrel_Data.csv")
+
+squirrel_colors = df["Primary Fur Color"].unique()
+squirrel_colors[0] = 'nan'
+
+squirrel_count = {
+    "color": [],
+    "count": []
 }
 
-data = pandas.DataFrame(data_dict)
-data.to_csv("csv/new_data.csv")
+for color in squirrel_colors:
+    squirrel_count["color"].append(color)
+    squirrel_count["count"].append(len(df[df["Primary Fur Color"] == color]))
+
+export_data = pandas.DataFrame(squirrel_count)
+export_data.to_csv("csv/squirrel_count.csv")
