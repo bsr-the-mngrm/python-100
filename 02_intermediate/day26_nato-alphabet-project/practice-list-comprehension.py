@@ -22,4 +22,12 @@
 # long_names = [name.upper() for name in names if len(name) > 5]
 # print(long_names)
 
-
+# # TASK6
+# with open("csv/file1.txt") as file:
+#     file1_list = [int(line.strip()) for line in file.readlines()]
+#
+# with open("csv/file2.txt") as file:
+#     file2_list = [int(line.strip()) for line in file.readlines()]
+#
+# result = [num for num in file1_list if num in file2_list]
+# print(result)
