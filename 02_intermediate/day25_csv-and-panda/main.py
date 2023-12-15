@@ -52,10 +52,11 @@ if __name__ == '__main__':
         with open("csv/50_states_winners.csv", mode="a") as file:
             file.write(f"{name_of_winner}\n")
     else:
-        missing_states = []
-        for state in states:
-            if state not in guessed_states:
-                missing_states.append(state)
+        missing_states = [state for state in states if state not in guessed_states]
+        # missing_states = []
+        # for state in states:
+        #     if state not in guessed_states:
+        #         missing_states.append(state)
         new_data = pandas.DataFrame(missing_states)
         new_data.to_csv("csv/50_states_missing_states")
 
