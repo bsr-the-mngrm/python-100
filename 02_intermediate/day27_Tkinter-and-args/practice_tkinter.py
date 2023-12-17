@@ -1,5 +1,11 @@
 from tkinter import *
 
+
+def button_clicked():
+    print("I got clicked!")
+    my_label["text"] = textbox.get()
+
+
 if __name__ == '__main__':
     window = Tk()
 
@@ -8,6 +14,17 @@ if __name__ == '__main__':
 
     # Label
     my_label = Label(text="I am a Label!", font=('Ariel', 24, "normal"))
-    my_label.pack(expand=True)
+    my_label.pack()
+
+    my_label["text"] = "New text"
+    my_label.config(text="Third Text")
+
+    # Button
+    button = Button(text="Click Me", command=button_clicked)
+    button.pack()
+
+    # Textbox/Entry
+    textbox = Entry(width=10)
+    textbox.pack()
 
     window.mainloop()
