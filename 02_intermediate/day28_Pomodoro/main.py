@@ -1,5 +1,6 @@
 from tkinter import *
 import time
+import math
 
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
@@ -13,12 +14,18 @@ LONG_BREAK_MIN = 20
 
 # ---------------------------- TIMER RESET ------------------------------- #
 
+
 # ---------------------------- TIMER MECHANISM ------------------------------- #
+def start_timer():
+    countdown(WORK_MIN*60)
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
 def countdown(count):
-    canvas.itemconfig(timer_text, text=count)
+    count_min = math.floor(count / 60)
+    count_sec = count % 60
+
+    canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
     if count > 0:
         window.after(1000, countdown, count-1)
 
@@ -41,7 +48,7 @@ if __name__ == '__main__':
     canvas.grid(column=1, row=1)
 
     # Start button
-    start_button = Button(text="Start", highlightthickness=0)
+    start_button = Button(text="Start", highlightthickness=0, command=start_timer)
     start_button.grid(column=0, row=2)
 
     # Reset button
@@ -51,8 +58,5 @@ if __name__ == '__main__':
     # Checkmarks
     check_marks = Label(text="✓", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 18, "bold"))
     check_marks.grid(column=1, row=3)
-
-    # Call countdown mechanism
-    countdown(5)
 
     window.mainloop()
