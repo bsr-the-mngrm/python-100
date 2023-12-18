@@ -15,7 +15,12 @@ LONG_BREAK_MIN = 20
 
 # ---------------------------- TIMER MECHANISM ------------------------------- #
 
+
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
+def countdown(count):
+    canvas.itemconfig(timer_text, text=count)
+    if count > 0:
+        window.after(1000, countdown, count-1)
 
 
 if __name__ == '__main__':
@@ -32,7 +37,7 @@ if __name__ == '__main__':
     canvas = Canvas(width=200, height=224, bg=YELLOW, highlightthickness=0)
     tomato_photo = PhotoImage(file="img/tomato.png")
     canvas.create_image(100, 112, image=tomato_photo)
-    canvas.create_text(100, 130, text="00:00", fill="white", font=(FONT_NAME, 24, "bold"))
+    timer_text = canvas.create_text(100, 130, text="00:00", fill="white", font=(FONT_NAME, 24, "bold"))
     canvas.grid(column=1, row=1)
 
     # Start button
@@ -46,5 +51,8 @@ if __name__ == '__main__':
     # Checkmarks
     check_marks = Label(text="✓", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 18, "bold"))
     check_marks.grid(column=1, row=3)
+
+    # Call countdown mechanism
+    countdown(5)
 
     window.mainloop()
