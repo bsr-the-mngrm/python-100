@@ -24,6 +24,7 @@ if __name__ == '__main__':
     window.title("Pomodoro")
     window.config(padx=100, pady=50, bg=YELLOW)
 
+    # Title label
     title_label = Label(text="Timer", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 30, "bold"))
     title_label.grid(column=1, row=0)
 
@@ -34,6 +35,12 @@ if __name__ == '__main__':
     canvas.create_text(100, 130, text="00:00", fill="white", font=(FONT_NAME, 24, "bold"))
     canvas.grid(column=1, row=1)
 
+    # Start button
+    start_button = Button(text="Start", highlightthickness=0)
+    start_button.grid(column=0, row=2)
 
+    # Reset button
+    reset_button = Button(text="Reset", highlightthickness=0)
+    reset_button.grid(column=2, row=2)
 
     window.mainloop()
