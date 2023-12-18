@@ -43,4 +43,8 @@ if __name__ == '__main__':
     reset_button = Button(text="Reset", highlightthickness=0)
     reset_button.grid(column=2, row=2)
 
+    # Checkmarks
+    check_marks = Label(text="✓", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 18, "bold"))
+    check_marks.grid(column=1, row=3)
+
     window.mainloop()
