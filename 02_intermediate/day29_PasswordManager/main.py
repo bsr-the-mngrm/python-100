@@ -1,7 +1,11 @@
 from tkinter import *
+from password_generator import PasswordGenerator
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+def generate_password():
+    password_entry.delete(0, END)
+    password_entry.insert(0, PasswordGenerator.generate())
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
@@ -52,7 +56,7 @@ if __name__ == '__main__':
     password_entry.grid(column=1, row=3, sticky='w')
 
     # Password generator UI element(s)
-    password_generator_btn = Button(text="Generate Password")
+    password_generator_btn = Button(text="Generate Password", command=generate_password)
     password_generator_btn.grid(column=1, row=3, sticky='e')
 
     # Save password element(s)
