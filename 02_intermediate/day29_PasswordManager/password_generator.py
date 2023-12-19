@@ -1,5 +1,5 @@
 # Password Generator Project
-import random
+from random import choice, randint, shuffle
 
 
 class PasswordGenerator:
@@ -14,25 +14,13 @@ class PasswordGenerator:
         numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
         symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
-        nr_letters = random.randint(8, 10)
-        nr_symbols = random.randint(2, 4)
-        nr_numbers = random.randint(2, 4)
+        password_letters = [choice(letters) for _ in range(randint(8, 10))]
+        password_symbols = [choice(symbols) for _ in range(randint(2, 4))]
+        password_numbers = [choice(numbers) for _ in range(randint(2, 4))]
 
-        password_list = []
+        password_chars = password_letters + password_symbols + password_numbers
+        shuffle(password_chars)
 
-        for char in range(nr_letters):
-            password_list.append(random.choice(letters))
-
-        for char in range(nr_symbols):
-            password_list += random.choice(symbols)
-
-        for char in range(nr_numbers):
-            password_list += random.choice(numbers)
-
-        random.shuffle(password_list)
-
-        password = ""
-        for char in password_list:
-            password += char
+        password = "".join(password_chars)
 
         return password
