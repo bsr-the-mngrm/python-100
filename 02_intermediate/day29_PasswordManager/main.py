@@ -3,7 +3,17 @@ from tkinter import *
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
+
 # ---------------------------- SAVE PASSWORD ------------------------------- #
+def save_password():
+    with open(".data/pw.txt", mode="a") as data_file:
+        new_entry = (website_entry.get(), username_entry.get(), password_entry.get())
+        new_data = " | ".join(new_entry)
+        data_file.write(new_data + "\n")
+
+    website_entry.delete(0, END)
+    username_entry.delete(0, END)
+    password_entry.delete(0, END)
 
 
 if __name__ == '__main__':
@@ -24,6 +34,7 @@ if __name__ == '__main__':
 
     website_entry = Entry(width=43)
     website_entry.grid(column=1, row=1, sticky='w')
+    website_entry.focus()
 
     # Email/Username UI element(s)
     username_label = Label(text="Email/Username:")
@@ -31,6 +42,7 @@ if __name__ == '__main__':
 
     username_entry = Entry(width=43)
     username_entry.grid(column=1, row=2, sticky='w')
+    username_entry.insert(0, "example@email.com")
 
     # Password UI element(s)
     password_label = Label(text="Password:")
@@ -44,7 +56,7 @@ if __name__ == '__main__':
     password_generator_btn.grid(column=1, row=3, sticky='e')
 
     # Save password element(s)
-    save_password_btn = Button(text="Add", width=36)
+    save_password_btn = Button(text="Add", width=36, command=save_password)
     save_password_btn.grid(column=1, row=4, sticky='w')
 
     window.mainloop()
