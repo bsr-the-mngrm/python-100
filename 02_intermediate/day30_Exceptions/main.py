@@ -47,6 +47,23 @@ if __name__ == '__main__':
     # # 🚨 Do not change the code below
     # make_pie(4)
 
+    # TASK4
+    facebook_posts = [{'Likes': 21, 'Comments': 2}, {'Likes': 13, 'Comments': 2, 'Shares': 1},
+                      {'Likes': 33, 'Comments': 8, 'Shares': 3}, {'Comments': 4, 'Shares': 2},
+                      {'Comments': 1, 'Shares': 1}, {'Likes': 19, 'Comments': 3}]
+
+    total_likes = 0
+    # TODO: Catch the KeyError exception
+    for post in facebook_posts:
+        try:
+            likes_of_post = post['Likes']
+        except KeyError:
+            continue
+        else:
+            total_likes += likes_of_post
+
+    print(total_likes)
+
     # # TypeError
     # text = "abc"
     # print(text + 3)
