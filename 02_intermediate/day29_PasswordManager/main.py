@@ -61,14 +61,15 @@ def find_password():
     try:
         with open(".data/pwd.json", mode="r") as data_file:
             data = json.load(data_file)
-        searched_data = data[website]
     except FileNotFoundError:
         messagebox.showwarning(title="Warning", message="No data file found.")
-    except KeyError:
-        messagebox.showwarning(title="Warning", message=f"No details for the '{website}' website exists")
     else:
-        messagebox.showinfo(title="Information", message=f"Username: {searched_data['username']}\n"
-                                                         f"Password: {searched_data['password']}")
+        if website in data:
+            searched_data = data[website]
+            messagebox.showinfo(title="Information", message=f"Username: {searched_data['username']}\n"
+                                                             f"Password: {searched_data['password']}")
+        else:
+            messagebox.showwarning(title="Warning", message=f"No details for the '{website}' website exists")
 
 
 if __name__ == '__main__':
