@@ -35,21 +35,22 @@ def save_password():
                                                           f"\nPassword: {password} \nIs it ok to save")
 
     if is_ok:
+        data = None
         try:
             with open(".data/pwd.json", mode="r") as data_file:
                 # Reading old data
                 data = json.load(data_file)
         except FileNotFoundError:
-            with open(".data/pwd.json", mode="w") as data_file:
-                # Saving first data
-                json.dump(new_data, data_file, indent=4)
+            # Load first data
+            data = new_data
         else:
             # Updating old data with new data
             data.update(new_data)
-            with open(".data/pwd.json", mode="w") as data_file:
-                # Saving updated data
-                json.dump(data, data_file, indent=4)
         finally:
+            with open(".data/pwd.json", mode="w") as data_file:
+                # Saving data
+                json.dump(data, data_file, indent=4)
+
             website_entry.delete(0, END)
             password_entry.delete(0, END)
 
