@@ -65,7 +65,7 @@ def find_password():
     except FileNotFoundError:
         messagebox.showwarning(title="Warning", message="No data file found.")
     except KeyError:
-        messagebox.showwarning(title="Warning", message="No details for the website exists")
+        messagebox.showwarning(title="Warning", message=f"No details for the '{website}' website exists")
     else:
         messagebox.showinfo(title="Information", message=f"Username: {searched_data['username']}\n"
                                                          f"Password: {searched_data['password']}")
