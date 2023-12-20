@@ -55,6 +55,11 @@ def save_password():
             password_entry.delete(0, END)
 
 
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+def find_password():
+    pass
+
+
 if __name__ == '__main__':
     # ---------------------------- UI SETUP ------------------------------- #
     window = Tk()
@@ -71,9 +76,13 @@ if __name__ == '__main__':
     website_label = Label(text="Website:")
     website_label.grid(column=0, row=1, sticky='e')
 
-    website_entry = Entry(width=43)
+    website_entry = Entry(width=23)
     website_entry.grid(column=1, row=1, sticky='w')
     website_entry.focus()
+
+    # Password Search UI element(s)
+    search_btn = Button(text="Search", width=15, command=find_password)
+    search_btn.grid(column=1, row=1, sticky='e')
 
     # Email/Username UI element(s)
     username_label = Label(text="Email/Username:")
@@ -87,11 +96,11 @@ if __name__ == '__main__':
     password_label = Label(text="Password:")
     password_label.grid(column=0, row=3, sticky='e')
 
-    password_entry = Entry(width=21)
+    password_entry = Entry(width=23)
     password_entry.grid(column=1, row=3, sticky='w')
 
     # Password generator UI element(s)
-    password_generator_btn = Button(text="Generate Password", command=generate_password)
+    password_generator_btn = Button(text="Generate Password", width=15, command=generate_password)
     password_generator_btn.grid(column=1, row=3, sticky='e')
 
     # Save password element(s)
