@@ -38,9 +38,10 @@ if __name__ == '__main__':
     # def make_pie(index):
     #     try:
     #         fruit = fruits[index]
-    #         print(fruit + " pie")
     #     except IndexError:
     #         print("Fruit pie")
+    #     else:
+    #         print(fruit + " pie")
     #
     #
     # # 🚨 Do not change the code below
