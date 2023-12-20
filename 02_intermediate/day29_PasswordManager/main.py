@@ -57,7 +57,18 @@ def save_password():
 
 # ---------------------------- SEARCH PASSWORD ------------------------------- #
 def find_password():
-    pass
+    website = website_entry.get()
+    try:
+        with open(".data/pwd.json", mode="r") as data_file:
+            data = json.load(data_file)
+        searched_data = data[website]
+    except FileNotFoundError:
+        messagebox.showwarning(title="Warning", message="No data file found.")
+    except KeyError:
+        messagebox.showwarning(title="Warning", message="No details for the website exists")
+    else:
+        messagebox.showinfo(title="Information", message=f"Username: {searched_data['username']}\n"
+                                                         f"Password: {searched_data['password']}")
 
 
 if __name__ == '__main__':
