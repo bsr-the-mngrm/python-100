@@ -1,6 +1,8 @@
 from tkinter import *
+import pandas
 
 BACKGROUND_COLOR = "#B1DDC6"
+FRENCH_WORDS = pandas.read_csv("data/french_words.csv").to_dict(orient="records")
 
 
 if __name__ == '__main__':
