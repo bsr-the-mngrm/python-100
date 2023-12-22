@@ -12,8 +12,8 @@ def read_birthdays():
 
 def generate_birthday_message(name: str):
     n = randint(1, 3)
-    with open(f".data/letter_templates/letter_{n}.txt") as letter:
-        return "".join(letter.readlines()).replace("[NAME]", name)
+    with open(f".data/letter_templates/letter_{n}.txt") as letter_file:
+        return "".join(letter_file.readlines()).replace("[NAME]", name)
 
 
 def send_birthday_wish(birthday_msg):
