@@ -1,4 +1,5 @@
 from datetime import datetime
+from random import choice
 
 
 def read_quotes():
@@ -11,8 +12,7 @@ def read_quotes():
 
 if __name__ == '__main__':
     quotes = read_quotes()
-    
     day_of_week = datetime.now().weekday()
 
     if day_of_week == 4:
-        pass
+        chosen_quote = choice(quotes)
