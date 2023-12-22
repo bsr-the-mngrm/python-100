@@ -10,5 +10,9 @@ recipient_email = os.getenv('RECIPIENT_EMAIL')
 
 connection = smtplib.SMTP_SSL("smtp.gmail.com", 465)
 connection.login(user=sender_email, password=sender_password)
-connection.sendmail(from_addr=sender_email, to_addrs=recipient_email, msg="Hello SMTP!")
+connection.sendmail(
+    from_addr=sender_email,
+    to_addrs=recipient_email,
+    msg="Subject: Testing\n\nHello SMTP!"
+)
 connection.close()
