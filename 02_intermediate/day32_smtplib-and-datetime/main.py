@@ -1,3 +1,4 @@
+from datetime import datetime
 import pandas
 
 
@@ -7,3 +8,8 @@ def read_birthdays():
 
 if __name__ == '__main__':
     birthdays = read_birthdays()
+    today = datetime.now()
+
+    for birthday in birthdays:
+        if birthday['month'] == today.month and birthday['day'] == today.day:
+            pass
