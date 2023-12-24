@@ -24,17 +24,18 @@ parameters = {
 
 data = requests.get(url="https://api.openweathermap.org/data/2.5/forecast", params=parameters)
 
-need_umbrella = "You don't need umbrella."
+if __name__ == '__main__':
+    need_umbrella = "You don't need umbrella."
 
-for i in range(parameters['cnt']):
-    if data.json()['list'][i]['weather'][0]['id'] < 700:
-        client = Client(account_sid, auth_token)
-        message = client.messages\
-            .create(
-                body="It's gonna rain! Bring an umbrella!",
-                from_=from_phone_number,
-                to=to_phone_number
-            )
+    for i in range(parameters['cnt']):
+        if data.json()['list'][i]['weather'][0]['id'] < 700:
+            client = Client(account_sid, auth_token)
+            message = client.messages\
+                .create(
+                    body="It's gonna rain! Bring an umbrella!",
+                    from_=from_phone_number,
+                    to=to_phone_number
+                )
 
-        print(message.status)
-        break
+            print(message.status)
+            break
