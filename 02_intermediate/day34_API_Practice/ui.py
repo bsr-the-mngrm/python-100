@@ -19,18 +19,22 @@ class QuizInterface:
         self.score_label.grid(column=1, row=0)
 
         self.question_canvas = Canvas(width=300, height=250, bg=QUESTION_BG_COLOR, highlightthickness=0)
-        self.question_canvas.create_text(150, 125, text="First Question?", font=QUESTION_FONT, fill=QUESTION_COLOR)
+        self.question_text = self.question_canvas.create_text(
+            150,
+            125,
+            text="First Question?",
+            font=QUESTION_FONT,
+            fill=QUESTION_COLOR
+        )
         self.question_canvas.grid(column=0, row=1, columnspan=2, padx=20, pady=50)
 
         false_img = PhotoImage(file="images/false.png")
         true_img = PhotoImage(file="images/true.png")
 
-        self.true_canvas = Canvas(width=100, height=97, highlightthickness=0)
-        self.true_canvas.create_image(50, 48, image=true_img)
-        self.true_canvas.grid(column=0, row=2)
+        self.true_button = Button(image=true_img, highlightthickness=0)
+        self.true_button.grid(column=0, row=2)
 
-        self.false_canvas = Canvas(width=100, height=97, highlightthickness=0)
-        self.false_canvas.create_image(50, 48, image=false_img)
-        self.false_canvas.grid(column=1, row=2)
+        self.false_button = Button(image=false_img, highlightthickness=0)
+        self.false_button.grid(column=1, row=2)
 
         self.window.mainloop()
