@@ -1,8 +1,11 @@
 import requests
+import os
 from datetime import datetime
+from dotenv import load_dotenv
 
-MY_LAT = 47.192087
-MY_LNG = 20.188501
+load_dotenv()
+MY_LAT = os.getenv('MY_LAT')
+MY_LNG = os.getenv('MY_LNG')
 
 
 def is_iss_overhead():
