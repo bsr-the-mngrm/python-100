@@ -9,9 +9,18 @@ my_lng = os.getenv('MY_LNG')
 parameters = {
     "appid": weather_api_key,
     "lat": my_lat,
-    "lon": my_lng
+    "lon": my_lng,
+    "cnt": 4,
+    "units": "metric"
 }
 
 data = requests.get(url="https://api.openweathermap.org/data/2.5/forecast", params=parameters)
 
-print(data.json())
+need_umbrella = "You don't need umbrella."
+
+for i in range(4):
+    if data.json()['list'][i]['weather'][0]['id'] < 700:
+        need_umbrella = "Bring an umbrella."
+        break
+
+print(need_umbrella)
