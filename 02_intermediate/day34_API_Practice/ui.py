@@ -58,9 +58,9 @@ class QuizInterface:
 
     def give_feedback(self, is_right):
         if is_right:
-            print(is_right)
             self.question_canvas.config(bg="green")
         else:
             self.question_canvas.config(bg="red")
 
+        self.score_label.config(text=f"Score: {self.quiz.score}")
         self.window.after(1000, self.get_next_question)
