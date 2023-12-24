@@ -1,4 +1,5 @@
 from tkinter import *
+from quiz_brain import QuizBrain
 
 THEME_COLOR = "#375362"
 SCORE_COLOR = "white"
@@ -10,7 +11,9 @@ QUESTION_FONT = ("Arial", 16, "italic")
 
 class QuizInterface:
 
-    def __init__(self):
+    def __init__(self, quiz_brain: QuizBrain):
+        self.quiz = quiz_brain
+
         self.window = Tk()
         self.window.title("Quizzler")
         self.window.config(padx=20, pady=20, bg=THEME_COLOR)
@@ -22,6 +25,7 @@ class QuizInterface:
         self.question_text = self.question_canvas.create_text(
             150,
             125,
+            width=290,
             text="First Question?",
             font=QUESTION_FONT,
             fill=QUESTION_COLOR
@@ -37,4 +41,10 @@ class QuizInterface:
         self.false_button = Button(image=false_img, highlightthickness=0)
         self.false_button.grid(column=1, row=2)
 
+        self.get_next_question()
+
         self.window.mainloop()
+
+    def get_next_question(self):
+        q_text = self.quiz.next_question()
+        self.question_canvas.itemconfig(self.question_text, text=q_text)
