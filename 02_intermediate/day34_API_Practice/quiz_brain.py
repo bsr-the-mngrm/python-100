@@ -9,10 +9,10 @@ class QuizBrain:
         self.question_list = q_list
         self.current_question = None
 
-    def still_has_questions(self):
+    def still_has_questions(self) -> bool:
         return self.question_number < len(self.question_list)
 
-    def next_question(self):
+    def next_question(self) -> str:
         self.current_question = self.question_list[self.question_number]
         self.question_number += 1
         q_text = html.unescape(self.current_question.text)
