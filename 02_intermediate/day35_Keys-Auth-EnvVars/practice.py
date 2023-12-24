@@ -18,7 +18,7 @@ data = requests.get(url="https://api.openweathermap.org/data/2.5/forecast", para
 
 need_umbrella = "You don't need umbrella."
 
-for i in range(4):
+for i in range(parameters['cnt']):
     if data.json()['list'][i]['weather'][0]['id'] < 700:
         need_umbrella = "Bring an umbrella."
         break
