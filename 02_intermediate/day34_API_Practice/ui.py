@@ -26,7 +26,7 @@ class QuizInterface:
             150,
             125,
             width=290,
-            text="First Question?",
+            text="Where is the First Question?",
             font=QUESTION_FONT,
             fill=QUESTION_COLOR
         )
