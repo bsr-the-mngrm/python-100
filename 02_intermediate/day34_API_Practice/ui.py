@@ -47,6 +47,8 @@ class QuizInterface:
 
     def get_next_question(self):
         self.question_canvas.config(bg=QUESTION_BG_COLOR)
+        self.true_button.config(state="normal")
+        self.false_button.config(state="normal")
 
         if self.quiz.still_has_questions():
             q_text = self.quiz.next_question()
@@ -61,6 +63,9 @@ class QuizInterface:
         self.give_feedback(self.quiz.check_answer("False"))
 
     def give_feedback(self, is_right):
+        self.true_button.config(state="disabled")
+        self.false_button.config(state="disabled")
+
         if is_right:
             self.question_canvas.config(bg="green")
         else:
@@ -79,4 +84,5 @@ class QuizInterface:
             font=QUESTION_FONT,
             fill=QUESTION_COLOR
         )
-        
+        self.true_button.config(state="disabled")
+        self.false_button.config(state="disabled")
