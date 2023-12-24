@@ -1,6 +1,7 @@
 import os
 import requests
 from dotenv import load_dotenv
+from twilio.rest import Client
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
@@ -37,17 +38,36 @@ if __name__ == '__main__':
             "sortBy": "popularity",
             "apiKey": news_apikey
         }
-        news_data = requests.get(url=news_url, params=news_url_parameters).json()['articles'][:3]
-        articles = []
-        for article in news_data:
-            a = (f"Title: {article['title']}\n"
-                 f"Description: {article['description']}\n"
-                 f"Source: {article['source']['name']}")
-            articles.append(a)
+        news_data = requests.get(url=news_url, params=news_url_parameters).json()
+        articles = news_data['articles'][:3]
 
+        for article in articles:
+            if stock_diff_percent > 0:
+                stock_diff_text = f"{STOCK}: 🔺{stock_diff_percent}%\n"
+            else:
+                stock_diff_text = f"{STOCK}: 🔻{stock_diff_percent}%\n"
+            msg = (f"{stock_diff_text}"
+                   f"Headline: {article['title']}\n"
+                   f"Brief: {article['description']}\n"
+                   f"Source: {article['source']['name']}")
 
-    # STEP 3: Use https://www.twilio.com
-    # Send a separate message with the percentage change and each article's title and description to your phone number.
+            # STEP 3: Use https://www.twilio.com
+            # Send a separate message with the percentage change
+            # and each article's title and description to your phone number.
+            account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+            auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+            from_phone_number = os.getenv('FROM_PHONE_NUMBER')
+            to_phone_number = os.getenv('TO_PHONE_NUMBER')
+
+            client = Client(account_sid, auth_token)
+            message = client.messages \
+                .create(
+                    body=msg,
+                    from_=from_phone_number,
+                    to=to_phone_number
+                )
+
+            print(message.status)
 
     # Optional: Format the SMS message like this:
     """
