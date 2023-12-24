@@ -47,8 +47,12 @@ class QuizInterface:
 
     def get_next_question(self):
         self.question_canvas.config(bg=QUESTION_BG_COLOR)
-        q_text = self.quiz.next_question()
-        self.question_canvas.itemconfig(self.question_text, text=q_text)
+
+        if self.quiz.still_has_questions():
+            q_text = self.quiz.next_question()
+            self.question_canvas.itemconfig(self.question_text, text=q_text)
+        else:
+            self.game_over()
 
     def true_pressed(self):
         self.give_feedback(self.quiz.check_answer("True"))
@@ -64,3 +68,15 @@ class QuizInterface:
 
         self.score_label.config(text=f"Score: {self.quiz.score}")
         self.window.after(1000, self.get_next_question)
+
+    def game_over(self):
+        self.question_canvas.itemconfig(self.question_text, text=f"THE END")
+        self.question_canvas.create_text(
+            150,
+            150,
+            width=290,
+            text=f"Your final score: {self.quiz.score}",
+            font=QUESTION_FONT,
+            fill=QUESTION_COLOR
+        )
+        
