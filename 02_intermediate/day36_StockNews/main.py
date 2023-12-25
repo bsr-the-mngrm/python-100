@@ -9,8 +9,6 @@ COMPANY_NAME = "Tesla Inc"
 
 if __name__ == '__main__':
     load_dotenv()
-    last_day = '2023-12-22'
-    day_before = '2023-12-21'
 
     # STEP 1: Use https://www.alphavantage.co
     # When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
@@ -21,9 +19,15 @@ if __name__ == '__main__':
         "symbol": STOCK,
         "apikey": stock_apikey
     }
-    stock_data = requests.get(url=stock_url, params=stock_url_parameters).json()
-    stock_last_day_close = float(stock_data['Time Series (Daily)'][last_day]['4. close'])
-    stock_day_before_close = float(stock_data['Time Series (Daily)'][day_before]['4. close'])
+    stock_data = requests.get(url=stock_url, params=stock_url_parameters).json()['Time Series (Daily)']
+
+    stock_data_days = [key for (key, value) in stock_data.items()][:2]
+    last_day = stock_data_days[0]
+    day_before = stock_data_days[1]
+
+    stock_daily_values = [value for (key, value) in stock_data.items()][:2]
+    stock_last_day_close = float(stock_daily_values[0]['4. close'])
+    stock_day_before_close = float(stock_daily_values[1]['4. close'])
     stock_diff_percent = round(((stock_last_day_close - stock_day_before_close) / stock_last_day_close) * 100, 2)
 
     # STEP 2: Use https://newsapi.org
