@@ -1,5 +1,6 @@
 import requests
 import os
+from datetime import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -8,6 +9,7 @@ TOKEN = os.getenv('TOKEN')
 PIXELA_ENDPOINT = "https://pixe.la/v1/users"
 GRAPH_ENDPOINT = f"{PIXELA_ENDPOINT}/{USERNAME}/graphs"
 GRAPH_ID = "graph1"
+TODAY = datetime.now()
 HEADERS = {
     "X-USER-TOKEN": TOKEN
 }
@@ -40,7 +42,7 @@ def create_graph():
 
 def post_pixel():
     pixel_config = {
-        "date": "20231226",
+        "date": TODAY.strftime("%Y%m%d"),
         "quantity": "4.5"
     }
 
