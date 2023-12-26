@@ -3,20 +3,21 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-username = os.getenv('USER')
-token = os.getenv('TOKEN')
-pixela_endpoint = "https://pixe.la/v1/users"
+USERNAME = os.getenv('USER')
+TOKEN = os.getenv('TOKEN')
+PIXELA_ENDPOINT = "https://pixe.la/v1/users"
+GRAPH_ENDPOINT = f"{PIXELA_ENDPOINT}/{USERNAME}/graphs"
 
 
 def create_account():
     user_parameters = {
-        "token": token,
-        "username": username,
+        "token": TOKEN,
+        "username": USERNAME,
         "agreeTermsOfService": "yes",
         "notMinor": "yes"
     }
 
-    response = requests.post(url=pixela_endpoint, json=user_parameters)
+    response = requests.post(url=PIXELA_ENDPOINT, json=user_parameters)
     print(response.text)
 
 
