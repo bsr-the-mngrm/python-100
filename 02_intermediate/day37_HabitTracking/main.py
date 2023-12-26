@@ -9,10 +9,13 @@ TOKEN = os.getenv('TOKEN')
 PIXELA_ENDPOINT = "https://pixe.la/v1/users"
 GRAPH_ENDPOINT = f"{PIXELA_ENDPOINT}/{USERNAME}/graphs"
 GRAPH_ID = "graph1"
-TODAY = datetime.now()
 HEADERS = {
     "X-USER-TOKEN": TOKEN
 }
+
+TODAY = datetime.now()
+DATE = datetime(year=2023, month=12, day=25)
+QUANTITY = "7.9"
 
 
 def create_account():
@@ -42,8 +45,8 @@ def create_graph():
 
 def post_pixel():
     pixel_config = {
-        "date": TODAY.strftime("%Y%m%d"),
-        "quantity": "4.5"
+        "date": DATE.strftime("%Y%m%d"),
+        "quantity": QUANTITY
     }
 
     response = requests.post(url=f"{GRAPH_ENDPOINT}/{GRAPH_ID}", json=pixel_config, headers=HEADERS)
