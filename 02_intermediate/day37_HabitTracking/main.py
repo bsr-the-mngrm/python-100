@@ -15,7 +15,7 @@ HEADERS = {
 
 TODAY = datetime.now()
 DATE = datetime(year=2023, month=12, day=25)
-QUANTITY = "7.9"
+QUANTITY = "3.2"
 
 
 def create_account():
@@ -53,9 +53,21 @@ def post_pixel():
     print(response.text)
 
 
+def update_pixel():
+    pixel_config = {
+        "quantity": QUANTITY
+    }
+
+    response = requests.put(url=f"{GRAPH_ENDPOINT}/{GRAPH_ID}/{DATE.strftime('%Y%m%d')}",
+                            json=pixel_config, headers=HEADERS)
+    print(response.text)
+
+
 if __name__ == '__main__':
     # create_account()
 
     # create_graph()
 
-    post_pixel()
+    # post_pixel()
+
+    update_pixel()
