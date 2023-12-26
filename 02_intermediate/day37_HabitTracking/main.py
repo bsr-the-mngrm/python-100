@@ -7,6 +7,9 @@ USERNAME = os.getenv('USER')
 TOKEN = os.getenv('TOKEN')
 PIXELA_ENDPOINT = "https://pixe.la/v1/users"
 GRAPH_ENDPOINT = f"{PIXELA_ENDPOINT}/{USERNAME}/graphs"
+HEADERS = {
+    "X-USER-TOKEN": TOKEN
+}
 
 
 def create_account():
@@ -21,5 +24,21 @@ def create_account():
     print(response.text)
 
 
+def create_graph():
+    graph_config = {
+        "id": "graph1",
+        "name": "Cycling Graph",
+        "unit": "Km",
+        "type": "float",
+        "color": "ajisai"
+    }
+
+    response = requests.post(url=GRAPH_ENDPOINT, json=graph_config, headers=HEADERS)
+    print(response.text)
+
+
 if __name__ == '__main__':
-    create_account()
+    # create_account()
+
+    create_graph()
+
