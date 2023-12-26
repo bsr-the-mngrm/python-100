@@ -63,6 +63,11 @@ def update_pixel():
     print(response.text)
 
 
+def delete_pixel():
+    response = requests.delete(url=f"{GRAPH_ENDPOINT}/{GRAPH_ID}/{DATE.strftime('%Y%m%d')}", headers=HEADERS)
+    print(response.text)
+
+
 if __name__ == '__main__':
     # create_account()
 
@@ -70,4 +75,6 @@ if __name__ == '__main__':
 
     # post_pixel()
 
-    update_pixel()
+    # update_pixel()
+
+    delete_pixel()
