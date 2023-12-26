@@ -38,9 +38,19 @@ def create_graph():
     print(response.text)
 
 
+def post_pixel():
+    pixel_config = {
+        "date": "20231226",
+        "quantity": "4.5"
+    }
+
+    response = requests.post(url=f"{GRAPH_ENDPOINT}/{GRAPH_ID}", json=pixel_config, headers=HEADERS)
+    print(response.text)
+
+
 if __name__ == '__main__':
     # create_account()
 
     # create_graph()
 
-
+    post_pixel()
