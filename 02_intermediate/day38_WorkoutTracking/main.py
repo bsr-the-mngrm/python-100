@@ -57,7 +57,5 @@ def post_to_sheets(stat):
 
 if __name__ == '__main__':
     user_input = input("Exercise: ")
-
     result = get_exercise_stats(user_input)
-
     post_to_sheets(result)
