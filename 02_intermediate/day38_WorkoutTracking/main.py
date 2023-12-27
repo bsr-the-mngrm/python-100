@@ -7,12 +7,17 @@ load_dotenv()
 APP_ID = os.getenv('APP_ID')
 API_KEY = os.getenv('API_KEY')
 NL_ENDPOINT = "https://trackapi.nutritionix.com/v2/natural/exercise"
-HEADER = {
+NL_HEADER = {
     "Content-Type": "application/json",
     "x-app-id": APP_ID,
     "x-app-key": API_KEY
 }
 SHEETY_URL = os.getenv('SHEETY_URL')
+SHEETY_HEADER = {
+    "Authorization": f"Basic {os.getenv('SHEETY_TOKEN')}",
+    "Username": os.getenv('USER'),
+    "Password": os.getenv('PASSWORD')
+}
 
 GENDER = os.getenv('GENDER')
 WEIGHT = os.getenv('WEIGHT')
@@ -29,7 +34,7 @@ def get_exercise_stats(exercise: str):
         "age": AGE
     }
 
-    response = requests.post(url=NL_ENDPOINT, headers=HEADER, json=nl_params)
+    response = requests.post(url=NL_ENDPOINT, headers=NL_HEADER, json=nl_params)
 
     now = datetime.now()
 
@@ -45,7 +50,7 @@ def post_to_sheets(stat):
         "workout": stat
     }
 
-    response = requests.post(url=SHEETY_URL, json=workout)
+    response = requests.post(url=SHEETY_URL, json=workout, headers=SHEETY_HEADER)
 
     print(response.json())
 
