@@ -16,8 +16,7 @@ class NotificationManager:
     def send_sms(self, flight: FlightData):
         client = Client(self.account_sid, self.auth_token)
 
-        msg = (f"Low price alert! Only {flight.price} to fly from {flight.fly_from} to {flight.fly_to}"
-               f", from {flight.date_from} to {flight.date_to}")
+        msg = flight.sms_message()
 
         message = client.messages \
             .create(
