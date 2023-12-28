@@ -27,7 +27,10 @@ class DataManager:
                 deal['iataCode'] = self.flight_search.get_iata_code(deal['city'])
                 print(f"{deal['city']} IATA code: {deal['iataCode']}")
                 print(f"Update in Google Sheets...")
-                self.update_deal(deal)
+                if self.update_deal(deal) == 200:
+                    print("Successfully updated.")
+                else:
+                    print("Bad request!")
 
         return deals
 
@@ -37,7 +40,4 @@ class DataManager:
         body = {
             "price": deal
         }
-        response = requests.put(url=sheety_put_url, headers=self.sheety_header, json=body)
-        if response.status_code == 200:
-            print("Successfully updated.")
-
+        return requests.put(url=sheety_put_url, headers=self.sheety_header, json=body).status_code
