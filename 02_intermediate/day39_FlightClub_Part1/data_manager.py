@@ -23,9 +23,21 @@ class DataManager:
 
         for deal in deals:
             if deal['iataCode'] == '':
+                print(f"Get {deal['city']}'s IATA code...")
                 deal['iataCode'] = self.flight_search.get_iata_code(deal['city'])
+                print(f"{deal['city']} IATA code: {deal['iataCode']}")
+                print(f"Update in Google Sheets...")
+                self.update_deal(deal)
 
         return deals
 
-    def update_deals(self):
-        pass
+    def update_deal(self, deal: dict):
+        sheety_put_url = f"{self.sheety_url}/{deal['id']}"
+        deal.pop('id', None)
+        body = {
+            "price": deal
+        }
+        response = requests.put(url=sheety_put_url, headers=self.sheety_header, json=body)
+        if response.status_code == 200:
+            print("Successfully updated.")
+
