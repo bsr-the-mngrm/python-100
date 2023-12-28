@@ -36,8 +36,12 @@ class DataManager:
 
     def update_deal(self, deal: dict):
         sheety_put_url = f"{self.sheety_url}/{deal['id']}"
-        deal.pop('id', None)
+
         body = {
-            "price": deal
+            "price": {
+                "city": deal['city'],
+                "iataCode": deal['iataCode'],
+                "lowestPrice": deal['lowestPrice']
+            }
         }
         return requests.put(url=sheety_put_url, headers=self.sheety_header, json=body).status_code
