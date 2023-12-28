@@ -2,6 +2,7 @@ import os
 import requests
 from dotenv import load_dotenv
 from flight_data import FlightData
+from datetime import datetime
 
 
 class FlightSearch:
@@ -27,12 +28,12 @@ class FlightSearch:
 
         return response.json()['locations'][0]['code']
 
-    def get_cheapest_flight(self, fly_from, fly_to, date_from, date_to):
+    def get_cheapest_flight(self, fly_from: tuple, fly_to, date_from: datetime, date_to: datetime) -> FlightData:
         flight_query = {
-            "fly_from": fly_from,
+            "fly_from": fly_from[1],
             "fly_to": fly_to,
-            "date_from": date_from,
-            "date_to": date_to,
+            "date_from": date_from.strftime("%d/%m/%Y"),
+            "date_to": date_to.strftime("%d/%m/%Y"),
             "adults": 1,
             "nights_in_dst_from": 5,
             "nights_in_dst_to": 14,
@@ -47,10 +48,11 @@ class FlightSearch:
         try:
             cheapest_flight = response.json()['data'][0]
         except IndexError:
-            print(f"No flights found for {fly_from}.")
+            print(f"No flights found for {fly_from[1]} to {fly_to}.")
             return None
 
-        return FlightData("Budapest-BUD", f"{cheapest_flight['cityTo']}-{cheapest_flight['flyTo']}",
+        return FlightData(f"{fly_from[0]}-{fly_from[1]}",
+                          f"{cheapest_flight['cityTo']}-{cheapest_flight['flyTo']}",
                           cheapest_flight["route"][0]["local_departure"].split('T')[0],
                           cheapest_flight["route"][1]["local_departure"].split('T')[0],
                           cheapest_flight['price'])
