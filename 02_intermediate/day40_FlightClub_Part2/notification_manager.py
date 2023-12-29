@@ -16,7 +16,7 @@ class NotificationManager:
     def send_sms(self, flight: FlightData):
         client = Client(self.account_sid, self.auth_token)
 
-        msg = flight.sms_message()
+        msg = flight.message_text()
 
         message = client.messages \
             .create(

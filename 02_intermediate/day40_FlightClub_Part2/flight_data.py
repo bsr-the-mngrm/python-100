@@ -6,7 +6,9 @@ class FlightData:
         self.price = price
         self.out_date = out_date
         self.return_date = return_date
+        self.stop_overs = 0
+        self.via_city = ""
 
-    def sms_message(self) -> str:
+    def message_text(self) -> str:
         return (f"Low price alert! Only {self.price} EUR  to fly from {self.fly_from} to {self.fly_to} "
                 f"from {self.out_date} to {self.return_date}")

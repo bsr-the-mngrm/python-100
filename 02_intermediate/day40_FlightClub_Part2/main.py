@@ -24,6 +24,6 @@ if __name__ == '__main__':
                 deal['lowestPrice'] = cheapest_flight.price
                 dm.update_deal(deal)
                 nm.send_sms(cheapest_flight)
-                print(cheapest_flight.sms_message())
+                print(cheapest_flight.message_text())
             else:
                 print(f"There is no cheaper flight between {origin_city} and {deal['city']}.")
