@@ -48,11 +48,23 @@ class FlightSearch:
         try:
             cheapest_flight = response.json()['data'][0]
         except IndexError:
-            print(f"No flights found for {fly_from[1]} to {fly_to}.")
-            return None
+            flight_query["max_stopovers"] = 1
 
-        return FlightData(f"{fly_from[0]}-{fly_from[1]}",
-                          f"{cheapest_flight['cityTo']}-{cheapest_flight['flyTo']}",
-                          cheapest_flight["route"][0]["local_departure"].split('T')[0],
-                          cheapest_flight["route"][1]["local_departure"].split('T')[0],
-                          cheapest_flight['price'])
+            response = requests.get(url=self.kiwi_search_endpoint, params=flight_query, headers=self.kiwi_header)
+
+            cheapest_flight = response.json()["data"][0]
+            flight_data = FlightData(f"{fly_from[0]}-{fly_from[1]}",
+                                     f"{cheapest_flight['cityTo']}-{cheapest_flight['flyTo']}",
+                                     cheapest_flight["route"][0]["local_departure"].split('T')[0],
+                                     cheapest_flight["route"][2]["local_departure"].split('T')[0],
+                                     cheapest_flight['price'],
+                                     stop_overs=1,
+                                     via_city=cheapest_flight["route"][0]["cityTo"]
+                                     )
+            return flight_data
+        else:
+            return FlightData(f"{fly_from[0]}-{fly_from[1]}",
+                              f"{cheapest_flight['cityTo']}-{cheapest_flight['flyTo']}",
+                              cheapest_flight["route"][0]["local_departure"].split('T')[0],
+                              cheapest_flight["route"][1]["local_departure"].split('T')[0],
+                              cheapest_flight['price'])
