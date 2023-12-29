@@ -21,9 +21,14 @@ if __name__ == '__main__':
 
         if cheapest_flight is not None:
             if cheapest_flight.price < int(deal['lowestPrice']):
+                users = dm.get_customers()
+                emails = [row["email"] for row in users]
+
                 deal['lowestPrice'] = cheapest_flight.price
                 dm.update_deal(deal)
-                nm.send_sms(cheapest_flight)
+
+                nm.send_sms(cheapest_flight.message_text())
+                nm.send_emails(emails, cheapest_flight.message_text())
                 print(cheapest_flight.message_text())
             else:
                 print(f"There is no cheaper flight between {origin_city} and {deal['city']}.")
