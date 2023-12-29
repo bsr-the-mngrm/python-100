@@ -10,5 +10,10 @@ class FlightData:
         self.via_city = via_city
 
     def message_text(self) -> str:
-        return (f"Low price alert! Only {self.price} EUR  to fly from {self.fly_from} to {self.fly_to} "
-                f"from {self.out_date} to {self.return_date}")
+        if self.stop_overs == 0:
+            return (f"Low price alert! Only {self.price} EUR  to fly from {self.fly_from} to {self.fly_to} "
+                    f"from {self.out_date} to {self.return_date}")
+        else:
+            return (f"Low price alert! Only {self.price} EUR  to fly from {self.fly_from} to {self.fly_to} "
+                    f"from {self.out_date} to {self.return_date}.\n"
+                    f"Flight has {self.stop_overs} stop over, via {self.via_city}.")
