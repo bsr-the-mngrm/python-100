@@ -1,10 +1,11 @@
 import requests
 import spotipy
+from pprint import pprint
 from bs4 import BeautifulSoup
 from datetime import datetime
 from os import system
 from dotenv import load_dotenv
-from spotipy.oauth2 import SpotifyClientCredentials
+from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
 
 BILLBOARD_URL = "https://www.billboard.com/charts/hot-100/"
 
@@ -41,6 +42,18 @@ def get_song_titles(date: str) -> list:
     return song_titles
 
 
+def get_spotify_api_client() -> spotipy.Spotify:
+    """Returns a Spotify API client"""
+    load_dotenv()
+    auth_manager = SpotifyClientCredentials()
+    scope = "playlist-modify-public"
+
+    return spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+
+
 if __name__ == '__main__':
     selected_date = user_input()
     song_title_list = get_song_titles(selected_date)
+    sp = get_spotify_api_client()
+
+    pprint(sp.search("track:Blinding Lights")['tracks']['items'][0]['uri'])
