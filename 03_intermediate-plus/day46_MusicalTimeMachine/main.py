@@ -28,6 +28,18 @@ def user_input() -> str:
             return user_choice
 
 
+def get_spotify_api_client() -> spotipy.Spotify:
+    """Returns a Spotify API client"""
+    load_dotenv()
+    return spotipy.Spotify(
+        auth_manager=SpotifyOAuth(
+            scope="playlist-modify-private",
+            show_dialog=True,
+            cache_path=".data/token.txt"
+        )
+    )
+
+
 def get_song_titles(date: str) -> list:
     """
         Returns a list of sing titles
@@ -39,15 +51,6 @@ def get_song_titles(date: str) -> list:
     song_title_list = [str(song.getText()).strip().replace("'", " ") for song in billboard_soup.select("li ul li h3")]
 
     return song_title_list
-
-
-def get_spotify_api_client() -> spotipy.Spotify:
-    """Returns a Spotify API client"""
-    load_dotenv()
-    auth_manager = SpotifyClientCredentials()
-    scope = "playlist-modify-private"
-
-    return spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
 
 def get_song_uri_list(sp_api: spotipy.Spotify, song_title_list: list) -> list:
@@ -65,13 +68,15 @@ def get_song_uri_list(sp_api: spotipy.Spotify, song_title_list: list) -> list:
 
 if __name__ == '__main__':
     selected_date = user_input()
-    song_titles = get_song_titles(selected_date)
+
     sp = get_spotify_api_client()
     user_id = sp.current_user()['id']
+
+    song_titles = get_song_titles(selected_date)
     song_URIs = get_song_uri_list(sp, song_titles)
 
     playlist_name = f"Billboard Hot 100 of {selected_date}"
     playlist_id = sp.user_playlist_create(user_id, playlist_name, public=False,
                                           collaborative=False, description="")['id']
-
+    
     sp.playlist_add_items(playlist_id, song_URIs)
