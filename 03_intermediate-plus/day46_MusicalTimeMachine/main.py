@@ -82,7 +82,7 @@ def get_song_uri_list(sp_api: spotipy.Spotify, song_list: list) -> list:
         try:
             song_uri_list.append(sp.search(f"track:{song['title']} artist:{song['artist']}")
                                  ['tracks']['items'][0]['uri'])
-            print(f"'{song['title']}' (by {song['artist']}) found on Spotify.")
+            print(f"'{song['title']}' (by {song['artist']}) found.")
         except IndexError:
             print(f"'{song['title']}' (by {song['artist']}) not found on Spotify.")
 
@@ -96,8 +96,6 @@ if __name__ == '__main__':
     user_id = sp.current_user()['id']
 
     songs = get_song_list(selected_date)
-
-    print(songs)
     song_URIs = get_song_uri_list(sp, songs)
 
     playlist_name = f"Billboard Hot 100 of {selected_date}"
@@ -105,3 +103,4 @@ if __name__ == '__main__':
                                           collaborative=False, description="")['id']
 
     sp.playlist_add_items(playlist_id, song_URIs)
+    print(f"\n'{playlist_name}' is created. Tracks are added.")
