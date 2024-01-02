@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from os import system
 from dotenv import load_dotenv
-from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
+from spotipy.oauth2 import SpotifyOAuth
 
 BILLBOARD_URL = "https://www.billboard.com/charts/hot-100/"
 
@@ -40,28 +40,51 @@ def get_spotify_api_client() -> spotipy.Spotify:
     )
 
 
-def get_song_titles(date: str) -> list:
+def get_song_list(date: str) -> list:
     """
-        Returns a list of sing titles
+        Returns a list of songs
+        (elements are dict type e.g.: {"title": "Hit Em Up", "artist": "2pac"})
         - Webscraping Billboard Hot100 on the given date
     """
 
     response = requests.get(f"{BILLBOARD_URL}/{date}")
     billboard_soup = BeautifulSoup(response.text, 'html.parser')
-    song_title_list = [str(song.getText()).strip().replace("'", " ") for song in billboard_soup.select("li ul li h3")]
 
-    return song_title_list
+    song_list = []
+
+    for song_title in billboard_soup.select("li ul li h3"):
+        song_list.append({"title": str(song_title.getText()).strip().replace("'", " ")})
+
+    song_list[0]['artist'] = str(billboard_soup.find(class_="c-label a-no-trucate a-font-primary-s "
+                                                            "lrv-u-font-size-14@mobile-max u-line-height-normal"
+                                                            "@mobile-max u-letter-spacing-0021 lrv-u-display-block "
+                                                            "a-truncate-ellipsis-2line u-max-width-330 u-max-width-"
+                                                            "230@tablet-only u-font-size-20@tablet").getText()
+                                 ).strip().replace("'", " ")
+
+    song_artists = billboard_soup.find_all(class_="c-label a-no-trucate a-font-primary-s lrv-u-font-size-14@mobile-max "
+                                                  "u-line-height-normal@mobile-max u-letter-spacing-0021 lrv-u-display-"
+                                                  "block a-truncate-ellipsis-2line u-max-width-330 u-max-width-230"
+                                                  "@tablet-only")
+
+    idx = 1
+    for song_artist in song_artists:
+        song_list[idx]["artist"] = str(song_artist.getText()).strip().replace("'", " ")
+        idx += 1
+
+    return song_list
 
 
-def get_song_uri_list(sp_api: spotipy.Spotify, song_title_list: list) -> list:
+def get_song_uri_list(sp_api: spotipy.Spotify, song_list: list) -> list:
     """Returns a list of Spotify URIs of the given song titles"""
     song_uri_list = []
-    for song_title in song_title_list:
+    for song in song_list:
         try:
-            song_uri_list.append(sp.search(f"track:{song_title}")['tracks']['items'][0]['uri'])
-            print(f"'{song_title}' found on Spotify.")
+            song_uri_list.append(sp.search(f"track:{song['title']} artist:{song['artist']}")
+                                 ['tracks']['items'][0]['uri'])
+            print(f"'{song['title']}' (by {song['artist']}) found on Spotify.")
         except IndexError:
-            print(f"'{song_title}' not found on Spotify.")
+            print(f"'{song['title']}' (by {song['artist']}) not found on Spotify.")
 
     return song_uri_list
 
@@ -72,11 +95,13 @@ if __name__ == '__main__':
     sp = get_spotify_api_client()
     user_id = sp.current_user()['id']
 
-    song_titles = get_song_titles(selected_date)
-    song_URIs = get_song_uri_list(sp, song_titles)
+    songs = get_song_list(selected_date)
+
+    print(songs)
+    song_URIs = get_song_uri_list(sp, songs)
 
     playlist_name = f"Billboard Hot 100 of {selected_date}"
     playlist_id = sp.user_playlist_create(user_id, playlist_name, public=False,
                                           collaborative=False, description="")['id']
-    
+
     sp.playlist_add_items(playlist_id, song_URIs)
