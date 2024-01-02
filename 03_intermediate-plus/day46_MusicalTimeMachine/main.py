@@ -19,14 +19,14 @@ def user_input() -> str:
             date_format = '%Y-%m-%d'
             if user_choice != "":
                 date_obj = datetime.strptime(user_choice, date_format)
+            else:
+                print("We will go with default value: 2000-08-12\n")
+                return '2000-08-12'
         except ValueError:
             system("cls||clear")
             print("Invalid date format! Try again:")
         else:
             return user_choice
-
-    print("\n We will go with default value: 2000-08-12")
-    return '2000-08-12'
 
 
 def get_song_titles(date: str) -> list:
@@ -37,9 +37,9 @@ def get_song_titles(date: str) -> list:
 
     response = requests.get(f"{BILLBOARD_URL}/{date}")
     billboard_soup = BeautifulSoup(response.text, 'html.parser')
-    song_titles = [str(song.getText()).strip() for song in billboard_soup.select("li ul li h3")]
+    song_title_list = [str(song.getText()).strip().replace("'", " ") for song in billboard_soup.select("li ul li h3")]
 
-    return song_titles
+    return song_title_list
 
 
 def get_spotify_api_client() -> spotipy.Spotify:
@@ -53,7 +53,5 @@ def get_spotify_api_client() -> spotipy.Spotify:
 
 if __name__ == '__main__':
     selected_date = user_input()
-    song_title_list = get_song_titles(selected_date)
+    song_titles = get_song_titles(selected_date)
     sp = get_spotify_api_client()
-
-    pprint(sp.search("track:Blinding Lights")['tracks']['items'][0]['uri'])
