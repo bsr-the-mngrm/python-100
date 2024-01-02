@@ -51,7 +51,21 @@ def get_spotify_api_client() -> spotipy.Spotify:
     return spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
 
+def get_song_uri_list(sp_api: spotipy.Spotify, song_title_list: list) -> list:
+    """Returns a list of Spotify URIs of the given song titles"""
+    song_uri_list = []
+    for song_title in song_title_list:
+        try:
+            song_uri_list.append(sp.search(f"track:{song_title}")['tracks']['items'][0]['uri'])
+        except IndexError:
+            print(f"'{song_title}' not found on Spotify.")
+
+    return song_uri_list
+
+
 if __name__ == '__main__':
     selected_date = user_input()
     song_titles = get_song_titles(selected_date)
     sp = get_spotify_api_client()
+    song_URIs = get_song_uri_list(sp, song_titles)
+    
