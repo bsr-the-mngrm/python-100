@@ -1,6 +1,5 @@
 import requests
 import spotipy
-from pprint import pprint
 from bs4 import BeautifulSoup
 from datetime import datetime
 from os import system
@@ -46,7 +45,7 @@ def get_spotify_api_client() -> spotipy.Spotify:
     """Returns a Spotify API client"""
     load_dotenv()
     auth_manager = SpotifyClientCredentials()
-    scope = "playlist-modify-public"
+    scope = "playlist-modify-private"
 
     return spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
@@ -57,6 +56,7 @@ def get_song_uri_list(sp_api: spotipy.Spotify, song_title_list: list) -> list:
     for song_title in song_title_list:
         try:
             song_uri_list.append(sp.search(f"track:{song_title}")['tracks']['items'][0]['uri'])
+            print(f"'{song_title}' found on Spotify.")
         except IndexError:
             print(f"'{song_title}' not found on Spotify.")
 
@@ -67,5 +67,11 @@ if __name__ == '__main__':
     selected_date = user_input()
     song_titles = get_song_titles(selected_date)
     sp = get_spotify_api_client()
+    user_id = sp.current_user()['id']
     song_URIs = get_song_uri_list(sp, song_titles)
-    
+
+    playlist_name = f"Billboard Hot 100 of {selected_date}"
+    playlist_id = sp.user_playlist_create(user_id, playlist_name, public=False,
+                                          collaborative=False, description="")['id']
+
+    sp.playlist_add_items(playlist_id, song_URIs)
