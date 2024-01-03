@@ -7,6 +7,8 @@
 
 ### ⚠️ Required environment variables 
 ```commandline
+EMAIL_HOST
+EMAIL_HOST_PORT
 EMAIL_ADDRESS
 EMAIL_APP_PASSWORD
 ```

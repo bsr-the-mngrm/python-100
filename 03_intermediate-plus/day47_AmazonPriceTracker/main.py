@@ -4,7 +4,10 @@ import os
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 
-LOWER_LIMIT = 70
+LOWER_LIMIT = 220
+PRODUCT_SOURCE = 'Amazon'
+PRODUCT_NAME = 'Audio-Technica AT-LP60X-BK'
+PRODUCT_URL = "https://www.amazon.com/Audio-Technica-AT-LP60X-BK-Belt-Drive-Hi-Fidelity-Anti-Resonance/dp/B07N3XJ66N/"
 
 
 def get_amazon_price(url: str) -> float:
@@ -36,9 +39,7 @@ def send_email_alert(source: str, product_name: str, price: float, url: str):
 
 
 if __name__ == '__main__':
-    product_amazon_url = "https://www.amazon.com/Amazon-Basics-Turntable-Speakers-Bluetooth/dp/B0BFHTPLNP/"
+    product_price = get_amazon_price(PRODUCT_URL)
 
-    product_amazon_price = get_amazon_price(product_amazon_url)
-
-    if product_amazon_price < LOWER_LIMIT:
-        send_email_alert('Amazon', 'Amazon Basics Turntable Record Player', product_amazon_price, product_amazon_url)
+    if product_price < LOWER_LIMIT:
+        send_email_alert(PRODUCT_SOURCE, PRODUCT_NAME, product_price, PRODUCT_URL)
