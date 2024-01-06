@@ -28,6 +28,12 @@ def save_job():
     save_button.click()
 
 
+def follow_company():
+    time.sleep(2)
+    follow_button = driver.find_element(By.CSS_SELECTOR, '.follow')
+    follow_button.click()
+
+
 if __name__ == '__main__':
     # SELENIUM INITIALIZATION
     chrome_options = webdriver.ChromeOptions()
@@ -41,3 +47,6 @@ if __name__ == '__main__':
 
     # SAVE JOB
     save_job()
+
+    # FOLLOW THE COMPANY
+    follow_company()
