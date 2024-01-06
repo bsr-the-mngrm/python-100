@@ -34,6 +34,24 @@ def follow_company():
     follow_button.click()
 
 
+def apply_to_job():
+    pass
+
+
+def go_throught_the_jobs():
+    time.sleep(3)
+    jobs = driver.find_elements(By.CSS_SELECTOR, '.job-card-container--clickable')
+
+    for job in jobs:
+        print(job.text)
+        job.click()
+
+        # SAVE JOB
+        save_job()
+        # FOLLOW THE COMPANY
+        follow_company()
+
+
 if __name__ == '__main__':
     # SELENIUM INITIALIZATION
     chrome_options = webdriver.ChromeOptions()
@@ -45,8 +63,5 @@ if __name__ == '__main__':
     login()
     driver.get(LINKEDIN_JOBS_URL)
 
-    # SAVE JOB
-    save_job()
-
-    # FOLLOW THE COMPANY
-    follow_company()
+    # GO THROUGHT THE JOBS
+    go_throught_the_jobs()
