@@ -22,4 +22,5 @@ python-dotenv
 ```commandline
 TWITTER_EMAIL
 TWITTER_PASSWORD
+ISP_TWITTER_USERNAME
 ```
