@@ -2,8 +2,8 @@ from selenium import webdriver
 from selenium.common import NoSuchElementException, ElementClickInterceptedException
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
-from time import sleep
 from selenium.webdriver.remote.webelement import WebElement
+from time import sleep
 
 
 class InstagramFollowerBot:
@@ -44,5 +44,14 @@ class InstagramFollowerBot:
         follower_list_xpath = '/html/body/div[6]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[2]/div[2]/div'
         follower_list = self.driver.find_element(By.XPATH, follower_list_xpath).find_elements(By.TAG_NAME, 'button')
 
+        self.__follow(follower_list)
+
     def __follow(self, follower_list: list[WebElement]):
-        pass
+        """Follow the accounts on a given list"""
+        for follow_button in follower_list:
+            try:
+                sleep(1)
+                follow_button.click()
+            except ElementClickInterceptedException:
+                sleep(1)
+                self.driver.find_element(By.XPATH, "//button[text()='Cancel']").click()

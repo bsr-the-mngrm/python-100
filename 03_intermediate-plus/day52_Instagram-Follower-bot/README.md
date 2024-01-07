@@ -10,7 +10,7 @@ a target account's followers.
 2) Create an InstagramFollowerBot class
 3) Login to Instagram
 4) Find the followers of the target account
-5) Follow all the followers
+5) Follow the displayed followers
 
 ## Requirements
 ### External python modules
