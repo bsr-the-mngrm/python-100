@@ -1,8 +1,9 @@
 from selenium import webdriver
-from selenium.common import NoSuchElementException
+from selenium.common import NoSuchElementException, ElementClickInterceptedException
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from time import sleep
+from selenium.webdriver.remote.webelement import WebElement
 
 
 class InstagramFollowerBot:
@@ -35,8 +36,13 @@ class InstagramFollowerBot:
         except NoSuchElementException:
             pass
 
-    def find_followers(self):
-        pass
+    def find_followers(self, target_account):
+        """Find the target account's followers"""
+        self.driver.get(f"https://www.instagram.com/{target_account}/followers/")
 
-    def follow(self):
+        sleep(5)
+        follower_list_xpath = '/html/body/div[6]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[2]/div[2]/div'
+        follower_list = self.driver.find_element(By.XPATH, follower_list_xpath).find_elements(By.TAG_NAME, 'button')
+
+    def __follow(self, follower_list: list[WebElement]):
         pass
