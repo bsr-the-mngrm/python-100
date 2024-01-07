@@ -10,6 +10,6 @@ TARGET_ACCOUNT_NAME = getenv('TARGET_ACCOUNT_NAME')
 
 if __name__ == '__main__':
     my_bot = InstagramFollowerBot()
-    my_bot.login()
+    my_bot.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
     my_bot.find_followers()
     my_bot.follow()
