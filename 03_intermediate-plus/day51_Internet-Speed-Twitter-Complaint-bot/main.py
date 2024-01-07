@@ -12,5 +12,5 @@ ISP_TWITTER_USERNAME = getenv('ISP_TWITTER_USERNAME')
 
 if __name__ == '__main__':
     my_bot = InternetSpeedTwitterBot(PROMISED_UP, PROMISED_DOWN, ISP_TWITTER_USERNAME)
-    my_bot.get_internet_speed()
+    print(my_bot.get_internet_speed())
     my_bot.tweet_at_provider()
