@@ -15,9 +15,12 @@ a target account's followers.
 ## Requirements
 ### External python modules
 ```commandline
-
+selenium
+python-dotenv
 ```
 ### Environment variables
 ```commandline
-
+INSTAGRAM_USERNAME
+INSTAGRAM_PASSWORD
+TARGET_ACCOUNT_NAME
 ```
