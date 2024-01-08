@@ -18,6 +18,7 @@ def get_data() -> list[list]:
     f"""Returns a list of apartments with details (link, price, address)\n 
         Webscrape '{DATA_SOURCE_URL}'
         and clean the data"""
+
     apartment_list = []
     for apartment in zillow_soup.select('ul[class="List-c11n-8-84-3-photo-cards"] li'):
         address = apartment.select_one('address')
@@ -44,6 +45,10 @@ def get_data() -> list[list]:
 
 def fill_out_form(apartment_list: list[list]):
     """Fill out Google Form"""
+
+    # OPEN GOOGLE FORM
+    driver.get(GOOGLE_FORM_URL)
+
     # GO THROUGH THE APARTMENT LIST AND FILL IN THE QUESTIONS (input_element) WITH ANSWERS (apartment.pop())
     apartment_list_length = len(apartment_list)
     for _ in range(apartment_list_length):
@@ -70,6 +75,13 @@ def fill_out_form(apartment_list: list[list]):
         driver.find_element(By.XPATH, f"//a[text()='{submit_another_answer_txt}']").click()
 
 
+def open_spreadsheet():
+    """OPEN A SPREADSHEET"""
+
+    # OPEN GOOGLE SHEETS
+    driver.get(GOOGLE_SHEETS_URL)
+
+
 if __name__ == '__main__':
     # INITIALIZATION OF BEAUTIFUL SOUP
     zillow_response = requests.get(DATA_SOURCE_URL)
@@ -78,11 +90,16 @@ if __name__ == '__main__':
     # GET DATA - WEBSCRAPE
     apartments = get_data()
 
+    # CHECK DATA
+    # pprint(apartments)
+
     # INITIALIZATION OF SELENIUM WEBDRIVER
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('detach', True)
     driver = webdriver.Chrome(options=chrome_options)
-    driver.get(GOOGLE_FORM_URL)
 
     # FILL UP GOOGLE FORM
     fill_out_form(apartments)
+
+    # OPEN GOOGLE SHEETS
+    open_spreadsheet()

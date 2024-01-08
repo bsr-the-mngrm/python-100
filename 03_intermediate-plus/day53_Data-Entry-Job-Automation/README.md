@@ -16,6 +16,7 @@ get a spreadsheet about the web-scraped data.
 ## Requirements
 ### External python modules
 ```commandline
+requests
 bs4
 selenium
 ```
