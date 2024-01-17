@@ -4,10 +4,12 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, Length
 from dotenv import load_dotenv
 from os import getenv
+from flask_bootstrap import Bootstrap5
 
 load_dotenv()
 app = Flask(__name__)
 app.secret_key = getenv('FLASK_APP_SECRET_KEY')
+bootstrap = Bootstrap5(app)
 
 
 class LoginForm(FlaskForm):
