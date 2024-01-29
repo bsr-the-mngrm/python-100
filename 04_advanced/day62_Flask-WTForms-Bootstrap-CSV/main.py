@@ -51,7 +51,7 @@ def cafes():
         list_of_rows = []
         for row in csv_data:
             list_of_rows.append(row)
-    return render_template('cafes.html', cafes=list_of_rows)
+    return render_template('cafes.html', cafes=list_of_rows, number_of_cafes=len(list_of_rows))
 
 
 if __name__ == '__main__':

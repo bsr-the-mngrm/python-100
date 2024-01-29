@@ -13,6 +13,28 @@
           <!-- This is where you will write the code to render a Bootstrap 
           Table that contains all the information from the 
           cafe-data.csv file. -->
+           <thead>
+            <tr>
+              <th scope="col">#</th>
+              {% for col_header in cafes[0] %}
+                  <th scope="col">{{ col_header }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in range(1, number_of_cafes) %}
+                <tr>
+                  <th scope="row">{{ i }}</th>
+                  {% for col_info in cafes[i] %}
+                    {% if "http" in col_info %}
+                        <td><a href="{{ col_info }}" >Maps Link</a></td>
+                    {% else %}
+                        <td>{{ col_info }}</td>
+                    {% endif %}
+                  {% endfor %}
+                </tr>
+            {% endfor %}
+          </tbody>
   	  </table>
 
       <p><a href="#">Return to index page</a></p>
