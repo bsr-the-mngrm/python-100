@@ -162,3 +162,8 @@ cython_debug/
 downloads/
 .idea/
 .data/
+.venv/
+
+bootstrap5/
+bootstrap.css
+bootstrap.min.css
