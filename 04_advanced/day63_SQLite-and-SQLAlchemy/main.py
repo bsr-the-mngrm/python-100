@@ -30,12 +30,13 @@ class Book(db.Model):
         return f'<Book {self.title}>'
 
 
+# Create table schema in the database
+with app.app_context():
+    db.create_all()
+
+
 @app.route('/')
 def home():
-    # Create table schema in the database
-    with app.app_context():
-        db.create_all()
-
     # READ ALL RECORDS
     result = db.session.execute(db.select(Book))
     all_books = result.scalars()
