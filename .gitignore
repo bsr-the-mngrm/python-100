@@ -169,3 +169,5 @@ bootstrap.css
 bootstrap.min.css
 
 *.db
+
+day56_Rendering-Static-files-and-Using-Templates/static/assets/css/
