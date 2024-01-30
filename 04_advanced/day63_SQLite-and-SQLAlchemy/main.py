@@ -43,13 +43,10 @@ def home():
 @app.route("/add", methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
-        new_book = {
-            "name": request.form["name"],
-            "author": request.form["author"],
-            "rating": request.form["rating"]
-        }
-        all_books.append(new_book)
-        print(all_books)
+        # CREATE A RECORD
+        new_book = Book(title=request.form['name'], author=request.form['author'], rating=request.form['rating'])
+        db.session.add(new_book)
+        db.session.commit()
         return redirect(url_for('home'))
     return render_template('add.html')
 
