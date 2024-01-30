@@ -1,0 +1,1 @@
+[Download CSS resources](https://github.com/bsr-the-mngrm/web-foundation/tree/main/_python-100-resources/day57_Jinja-and-Flask/static/css)

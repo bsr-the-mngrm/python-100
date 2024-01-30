@@ -1,0 +1,1 @@
+[Download CSS resource](https://github.com/bsr-the-mngrm/web-foundation/blob/main/_python-100-resources/day59_Blog-Project-Part2/static-css/styles.css)
