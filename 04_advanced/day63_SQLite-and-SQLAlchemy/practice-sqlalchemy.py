@@ -21,6 +21,8 @@ db.init_app(app)
 
 # CREATE TABLE
 class Book(db.Model):
+    __tablename__ = "books"
+
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
     author: Mapped[str] = mapped_column(String(250), nullable=False)
@@ -38,6 +40,6 @@ with app.app_context():
 
 # Create record
 with app.app_context():
-    new_book = Book(id=1, title='Harry Potter', author='J.K. Rowling', rating=9.3)
+    new_book = Book(id=2, title='Harry Potter2', author='J.K. Rowling', rating=9.3)
     db.session.add(new_book)
     db.session.commit()
