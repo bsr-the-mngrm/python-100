@@ -69,5 +69,16 @@ def edit():
     return render_template('edit_rating.html', book=book)
 
 
+@app.route("/delete")
+def delete():
+    # DELETE A RECORD
+    book_id = request.args.get('id')
+    book_to_delete = db.session.execute(db.select(Book).where(Book.id == book_id)).scalar()
+    db.session.delete(book_to_delete)
+    db.session.commit()
+
+    return redirect(url_for('home'))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
