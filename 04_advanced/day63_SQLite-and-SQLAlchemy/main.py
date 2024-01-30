@@ -16,8 +16,6 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///books-collection.db"
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
-all_books = []
-
 
 # CREATE TABLE
 class Book(db.Model):
@@ -37,6 +35,11 @@ def home():
     # Create table schema in the database
     with app.app_context():
         db.create_all()
+
+    # READ ALL RECORDS
+    result = db.session.execute(db.select(Book))
+    all_books = result.scalars()
+
     return render_template('index.html', books=all_books)
 
 
