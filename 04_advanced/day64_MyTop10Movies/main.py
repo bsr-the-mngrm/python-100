@@ -47,6 +47,13 @@ with app.app_context():
     db.create_all()
 
 
+# MOVIE WTFORM
+class RateMovieForm(FlaskForm):
+    rating = StringField('Your Rating Out of 10 e.g. 7.5', validators=[DataRequired()])
+    review = StringField('Your Review', validators=[DataRequired()])
+    submit = SubmitField('Done')
+
+
 # # After adding the new_movie the code needs to be commented out/deleted.
 # # So you are not trying to add the same movie twice. The db will reject non-unique movie titles.
 # new_movie = Movie(
@@ -82,6 +89,31 @@ def home():
     my_top_movies = db.session.execute(db.select(Movie).order_by(Movie.ranking)).scalars().all()
 
     return render_template("index.html", movies=my_top_movies)
+
+
+@app.route("/add")
+def add():
+    pass
+
+
+@app.route("/update", methods=['GET', 'POST'])
+def update():
+    movie_id = request.args.get('id')
+    movie = db.get_or_404(Movie, movie_id)
+    form = RateMovieForm()
+
+    if form.validate_on_submit():
+        movie.rating = float(form.rating.data)
+        movie.review = form.review.data
+        db.session.commit()
+        return redirect(url_for('home'))
+
+    return render_template('edit.html', form=form, movie=movie)
+
+
+@app.route("/delete")
+def delete():
+    pass
 
 
 if __name__ == '__main__':
