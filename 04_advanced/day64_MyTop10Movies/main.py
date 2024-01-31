@@ -8,6 +8,11 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from dotenv import load_dotenv
 from os import getenv
+import requests
+
+TMDB_SEARCH_URL = 'https://api.themoviedb.org/3/search/movie'
+TMDB_INFO_URL = 'https://api.themoviedb.org/3/movie'
+TMDB_IMG_URL = 'https://image.tmdb.org/t/p/original'
 
 load_dotenv()
 
@@ -35,9 +40,9 @@ class Movie(db.Model):
     title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
     year: Mapped[int] = mapped_column(Integer, nullable=False)
     description: Mapped[str] = mapped_column(String(500), nullable=False)
-    rating: Mapped[float] = mapped_column(Float, nullable=False)
-    ranking: Mapped[int] = mapped_column(Integer, nullable=False)
-    review: Mapped[str] = mapped_column(String(250), nullable=False)
+    rating: Mapped[float] = mapped_column(Float, nullable=True)
+    ranking: Mapped[int] = mapped_column(Integer, nullable=True)
+    review: Mapped[str] = mapped_column(String(250), nullable=True)
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
 
 
@@ -53,6 +58,11 @@ class RateMovieForm(FlaskForm):
     submit = SubmitField('Done')
 
 
+class AddMovieForm(FlaskForm):
+    title = StringField('Movie Title', validators=[DataRequired()])
+    submit = SubmitField('Add Movie')
+
+
 @app.route("/")
 def home():
     my_top_movies = db.session.execute(db.select(Movie).order_by(Movie.ranking)).scalars().all()
@@ -60,9 +70,14 @@ def home():
     return render_template("index.html", movies=my_top_movies)
 
 
-@app.route("/add")
+@app.route("/add", methods=['GET', 'POST'])
 def add():
-    pass
+    form = AddMovieForm()
+
+    if form.validate_on_submit():
+        return redirect(url_for('find_movie', title=form.title.data))
+
+    return render_template('add.html', form=form)
 
 
 @app.route("/update", methods=['GET', 'POST'])
@@ -89,6 +104,54 @@ def delete():
     db.session.commit()
 
     return redirect(url_for('home'))
+
+
+@app.route("/find")
+def find_movie():
+    if request.args.get('movie_tmdb_id'):
+        new_movie_details = get_movie_details(request.args.get('movie_tmdb_id'))
+
+        new_movie = Movie(
+            title=new_movie_details['original_title'],
+            year=int(new_movie_details['release_date'].split('-')[0]),
+            description=new_movie_details['overview'],
+            rating=None,
+            ranking=None,
+            review=None,
+            img_url=f"{TMDB_IMG_URL}/{new_movie_details['poster_path']}"
+        )
+
+        db.session.add(new_movie)
+        db.session.commit()
+
+        return redirect(url_for('update', id=new_movie.id))
+
+    return render_template('select.html', movies=get_movies(request.args.get('title')))
+
+
+def get_movies(title: str) -> list[dict]:
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {getenv('TMDB_API_KEY')}"
+    }
+
+    response = requests.get(TMDB_SEARCH_URL, headers=headers, params={"query": title, "include_adult": "false",
+                                                                      "language": "en-US", "page": 1})
+
+    return response.json()["results"]
+
+
+def get_movie_details(movie_id) -> dict:
+    url = f"{TMDB_INFO_URL}/{movie_id}"
+
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {getenv('TMDB_API_KEY')}"
+    }
+
+    response = requests.get(url, headers=headers, params={"language": "en-US"})
+
+    return response.json()
 
 
 if __name__ == '__main__':
