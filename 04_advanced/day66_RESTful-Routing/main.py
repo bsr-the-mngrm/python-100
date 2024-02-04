@@ -43,7 +43,7 @@ class Cafe(db.Model):
         #     # and the value is the value of the column
         #     dictionary[column.name] = getattr(self, column.name)
         # return dictionary
-        
+
         # Method 2. Alternatively use Dictionary Comprehension to do the same thing
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}
 
@@ -57,6 +57,7 @@ def home():
     return render_template("index.html")
 
 
+# HTTP GET - Read Record
 @app.route("/random")
 def random():
     all_cafes = db.session.execute(db.select(Cafe)).scalars().all()
@@ -81,9 +82,6 @@ def random():
     # })
 
     return jsonify(cafe=random_cafe.to_dict())
-
-
-# HTTP GET - Read Record
 
 # HTTP POST - Create Record
 
