@@ -3,8 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Boolean
 from random import choice
+from dotenv import load_dotenv
+from os import getenv
 
-
+load_dotenv()
 app = Flask(__name__)
 
 
@@ -126,7 +128,7 @@ def add_new_cafe():
 
 
 # HTTP PUT/PATCH - Update Record
-@app.route("/update-price/<cafe_id>", methods=["PATCH"])
+@app.route("/update-price/<int:cafe_id>", methods=["PATCH"])
 def update_price(cafe_id):
     cafe_to_update = db.session.get(Cafe, cafe_id)
 
@@ -137,7 +139,20 @@ def update_price(cafe_id):
     else:
         return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."}), 404
 
+
 # HTTP DELETE - Delete Record
+@app.route("/report-closed/<int:cafe_id>", methods=["DELETE"])
+def delete_cafe(cafe_id):
+    if request.args.get("api-key") == getenv('API-KEY'):
+        cafe_to_delete = db.session.get(Cafe, cafe_id)
+        if cafe_to_delete:
+            db.session.delete(cafe_to_delete)
+            db.session.commit()
+            return jsonify(response={"success": f"{cafe_to_delete.name} successfully deleted."})
+        else:
+            return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."}), 404
+    else:
+        return jsonify(error="Sorry, that's not allowed. Make sure you haver the correct api_key."), 403
 
 
 if __name__ == '__main__':
