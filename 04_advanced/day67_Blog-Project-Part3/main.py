@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -45,11 +45,12 @@ with app.app_context():
 
 
 class BlogPostForm(FlaskForm):
-    title = StringField('Blog Post Title')
-    subtitle = StringField('Subtitle')
-    body = CKEditorField('Blog Content')
-    author = StringField('Your Name')
-    img_url = StringField('Blog Image URL')
+    title = StringField('Blog Post Title', validators=[DataRequired()])
+    subtitle = StringField('Subtitle', validators=[DataRequired()])
+    author = StringField('Your Name', validators=[DataRequired()])
+    img_url = StringField('Blog Image URL', validators=[DataRequired(), URL()])
+    body = CKEditorField('Blog Content', validators=[DataRequired()])
+    submit = SubmitField('Submit Post')
 
 
 @app.route('/')
@@ -68,6 +69,25 @@ def show_post(post_id):
 
 
 # TODO: add_new_post() to create a new blog post
+@app.route('/new-post', methods=['GET', 'POST'])
+def add_new_post():
+    form = BlogPostForm()
+
+    if form.validate_on_submit():
+        new_post = BlogPost(
+            title=form.title.data,
+            subtitle=form.subtitle.data,
+            date=date.today().strftime("%B %d, %Y"),
+            body=form.body.data,
+            author=form.author.data,
+            img_url=form.img_url.data
+        )
+        db.session.add(new_post)
+        db.session.commit()
+        return redirect(url_for('get_all_posts'))
+
+    return render_template('make-post.html', form=form)
+
 
 # TODO: edit_post() to change an existing blog post
 
