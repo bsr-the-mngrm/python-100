@@ -40,8 +40,20 @@ def home():
     return render_template("index.html")
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+
+    if request.method == 'POST':
+        new_user = User(
+            name=request.form.get('name'),
+            email=request.form.get('email'),
+            password=request.form.get('password')
+        )
+        db.session.add(new_user)
+        db.session.commit()
+
+        return redirect(url_for('secrets', user_id=new_user.id))
+
     return render_template("register.html")
 
 
@@ -52,7 +64,9 @@ def login():
 
 @app.route('/secrets')
 def secrets():
-    return render_template("secrets.html")
+    user = db.get_or_404(User, request.args.get('user_id'))
+
+    return render_template("secrets.html", username=user.name)
 
 
 @app.route('/logout')
