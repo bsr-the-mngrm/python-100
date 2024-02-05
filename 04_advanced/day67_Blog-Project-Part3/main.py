@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -86,10 +86,37 @@ def add_new_post():
         db.session.commit()
         return redirect(url_for('get_all_posts'))
 
-    return render_template('make-post.html', form=form)
+    return render_template('make-post.html', form=form, is_new_post=True)
 
 
 # TODO: edit_post() to change an existing blog post
+@app.route('/edit-post/<int:post_id>', methods=['GET', 'POST'])
+def edit_post(post_id):
+    post = db.get_or_404(BlogPost, post_id)
+    form = BlogPostForm(
+        title=post.title,
+        subtitle=post.subtitle,
+        date=post.date,
+        body=post.body,
+        author=post.author,
+        img_url=post.img_url
+    )
+
+    if form.validate_on_submit():
+        db.session.query(BlogPost).filter_by(id=post.id).update(dict(
+            title=form.title.data,
+            subtitle=form.subtitle.data,
+            date=post.date,
+            body=form.body.data,
+            author=form.author.data,
+            img_url=form.img_url.data
+        ))
+
+        db.session.commit()
+        return redirect(url_for('show_post', post_id=post.id))
+
+    return render_template('make-post.html', form=form, is_new_post=False)
+
 
 # TODO: delete_post() to remove a blog post from the database
 
