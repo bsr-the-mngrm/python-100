@@ -49,7 +49,7 @@ def register():
         new_user = User(
             name=request.form.get('name'),
             email=request.form.get('email'),
-            password=request.form.get('password')
+            password=generate_password_hash(request.form.get('password'), method='pbkdf2', salt_length=8)
         )
         db.session.add(new_user)
         db.session.commit()
