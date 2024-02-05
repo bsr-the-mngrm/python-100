@@ -7,10 +7,12 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from dotenv import load_dotenv
 from os import getenv
 
+UPLOAD_FOLDER = 'static/files'
 
 load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = getenv('FLASK_APP_SECRET_KEY')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 # CREATE DATABASE
@@ -76,7 +78,7 @@ def logout():
 
 @app.route('/download')
 def download():
-    pass
+    return send_from_directory(app.config['UPLOAD_FOLDER'], 'cheat_sheet.pdf')
 
 
 if __name__ == "__main__":
