@@ -16,6 +16,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = getenv('FLASK_APP_SECRET_KEY')
 Bootstrap5(app)
+ckeditor = CKEditor(app)
 
 
 # CREATE DATABASE
@@ -41,6 +42,14 @@ class BlogPost(db.Model):
 
 with app.app_context():
     db.create_all()
+
+
+class BlogPostForm(FlaskForm):
+    title = StringField('Blog Post Title')
+    subtitle = StringField('Subtitle')
+    body = CKEditorField('Blog Content')
+    author = StringField('Your Name')
+    img_url = StringField('Blog Image URL')
 
 
 @app.route('/')
