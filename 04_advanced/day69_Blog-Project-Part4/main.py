@@ -50,7 +50,10 @@ class BlogPost(db.Model):
     subtitle: Mapped[str] = mapped_column(String(250), nullable=False)
     date: Mapped[str] = mapped_column(String(250), nullable=False)
     body: Mapped[str] = mapped_column(Text, nullable=False)
-    author: Mapped[str] = mapped_column(String(250), nullable=False)
+    # Create Foreign Key, "users.id" the users refers to the tablename of User.
+    author_id: Mapped[int] = mapped_column(db.ForeignKey('users.id'))
+    # Create reference to the User object. The "posts" refers to the posts property in the User class.
+    author: Mapped["User"] = relationship(back_populates="posts")
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
 
 
@@ -61,6 +64,9 @@ class User(UserMixin, db.Model):
     name: Mapped[str] = mapped_column(String(127), nullable=False)
     email: Mapped[str] = mapped_column(String(127), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(255), nullable=False)
+    # This will act like a List of BlogPost objects attached to each User.
+    # The "author" refers to the author property in the BlogPost class.
+    posts: Mapped[list["BlogPost"]] = relationship(back_populates='author')
 
 
 with app.app_context():
