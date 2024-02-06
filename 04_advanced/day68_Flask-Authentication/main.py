@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String
+from sqlalchemy.exc import IntegrityError
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from dotenv import load_dotenv
 from os import getenv
@@ -58,17 +59,21 @@ def home():
 def register():
 
     if request.method == 'POST':
-        new_user = User(
-            name=request.form.get('name'),
-            email=request.form.get('email'),
-            password=generate_password_hash(request.form.get('password'), method='pbkdf2', salt_length=8)
-        )
-        db.session.add(new_user)
-        db.session.commit()
+        try:
+            new_user = User(
+                name=request.form.get('name'),
+                email=request.form.get('email'),
+                password=generate_password_hash(request.form.get('password'), method='pbkdf2', salt_length=8)
+            )
+            db.session.add(new_user)
+            db.session.commit()
 
-        login_user(new_user)
+            login_user(new_user)
 
-        return redirect(url_for('secrets', user_id=new_user.id))
+            return redirect(url_for('secrets', user_id=new_user.id))
+        except IntegrityError:
+            flash("You've already signed up with that email. Login instead of registering.")
+            return redirect(url_for('login'))
 
     return render_template("register.html")
 
@@ -79,10 +84,13 @@ def login():
     if request.method == 'POST':
         user: User = db.session.execute(db.select(User).where(User.email == request.form.get('email'))).scalar()
 
-        if check_password_hash(user.password, request.form.get('password')):
-            login_user(user)
+        if user:
+            if check_password_hash(user.password, request.form.get('password')):
+                login_user(user)
 
-            return redirect(url_for('secrets', user_id=user.id))
+                return redirect(url_for('secrets', user_id=user.id))
+        else:
+            flash('Invalid credential(s)', 'error')
 
     return render_template("login.html")
 
