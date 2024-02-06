@@ -12,7 +12,7 @@ from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 from os import getenv
-from forms import CreatePostForm, RegisterForm
+from forms import CreatePostForm, RegisterForm, LoginForm
 
 load_dotenv()
 
@@ -23,6 +23,13 @@ ckeditor = CKEditor(app)
 Bootstrap5(app)
 
 # TODO: Configure Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.get_or_404(User, user_id)
 
 
 # DATABASE SETUP
@@ -48,7 +55,7 @@ class BlogPost(db.Model):
 
 
 # TODO: Create a User table for all your registered users.
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(127), nullable=False)
@@ -64,6 +71,8 @@ with app.app_context():
 # TODO: Use Werkzeug to hash the user's password when creating a new user.
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('get_all_posts'))
 
     register_form = RegisterForm()
 
@@ -77,21 +86,38 @@ def register():
             db.session.add(new_user)
             db.session.commit()
 
+            login_user(new_user)
+
             return redirect(url_for('get_all_posts'))
         except IntegrityError:
-            flash("Already signed up.", "error")
+            flash("Already signed up.", "flash")
 
     return render_template("register.html", form=register_form)
 
 
 # TODO: Retrieve a user from the database based on their email. 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template("login.html")
+    if current_user.is_authenticated:
+        return redirect(url_for('get_all_posts'))
+
+    login_form = LoginForm()
+
+    if login_form.validate_on_submit():
+        user: User = db.session.execute(db.select(User).where(User.email == login_form.email.data)).scalar()
+
+        if user and check_password_hash(user.password, login_form.password.data):
+            login_user(user)
+            return redirect(url_for('get_all_posts'))
+        else:
+            flash("Invalid credential(s)", "flash")
+
+    return render_template("login.html", form=login_form)
 
 
 @app.route('/logout')
 def logout():
+    logout_user()
     return redirect(url_for('get_all_posts'))
 
 
@@ -99,14 +125,14 @@ def logout():
 def get_all_posts():
     result = db.session.execute(db.select(BlogPost))
     posts = result.scalars().all()
-    return render_template("index.html", all_posts=posts)
+    return render_template("index.html", all_posts=posts, current_user=current_user)
 
 
 # TODO: Allow logged-in users to comment on posts
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
     requested_post = db.get_or_404(BlogPost, post_id)
-    return render_template("post.html", post=requested_post)
+    return render_template("post.html", post=requested_post, current_user=current_user)
 
 
 # TODO: Use a decorator so only an admin user can create a new post
@@ -125,7 +151,7 @@ def add_new_post():
         db.session.add(new_post)
         db.session.commit()
         return redirect(url_for("get_all_posts"))
-    return render_template("make-post.html", form=form)
+    return render_template("make-post.html", form=form, current_user=current_user)
 
 
 # TODO: Use a decorator so only an admin user can edit a post
@@ -147,7 +173,7 @@ def edit_post(post_id):
         post.body = edit_form.body.data
         db.session.commit()
         return redirect(url_for("show_post", post_id=post.id))
-    return render_template("make-post.html", form=edit_form, is_edit=True)
+    return render_template("make-post.html", form=edit_form, is_edit=True, current_user=current_user)
 
 
 # TODO: Use a decorator so only an admin user can delete a post
@@ -161,12 +187,12 @@ def delete_post(post_id):
 
 @app.route("/about")
 def about():
-    return render_template("about.html")
+    return render_template("about.html", current_user=current_user)
 
 
 @app.route("/contact")
 def contact():
-    return render_template("contact.html")
+    return render_template("contact.html", current_user=current_user)
 
 
 if __name__ == "__main__":
