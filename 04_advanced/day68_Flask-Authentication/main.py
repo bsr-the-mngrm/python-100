@@ -8,14 +8,25 @@ from dotenv import load_dotenv
 from os import getenv
 
 UPLOAD_FOLDER = 'static/files'
-
 load_dotenv()
+
+# FLASK APPLICATION SETUP
 app = Flask(__name__)
 app.config['SECRET_KEY'] = getenv('FLASK_APP_SECRET_KEY')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# FLASK-LOGIN MANAGER SETUP
+login_manager = LoginManager()
+login_manager.init_app(app)
 
-# CREATE DATABASE
+
+# Create a user_loader callback
+@login_manager.user_loader
+def load_user(user_id):
+    return db.get_or_404(User, user_id)
+
+
+# DATABASE SETUP
 class Base(DeclarativeBase):
     pass
 
@@ -25,8 +36,8 @@ db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
 
-# CREATE TABLE IN DB
-class User(db.Model):
+# TABLE IN DB
+class User(UserMixin, db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     email: Mapped[str] = mapped_column(String(100), unique=True)
     password: Mapped[str] = mapped_column(String(100))
@@ -37,6 +48,7 @@ with app.app_context():
     db.create_all()
 
 
+# FLASK APPLICATION ROUTES
 @app.route('/')
 def home():
     return render_template("index.html")
@@ -54,17 +66,29 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
+        login_user(new_user)
+
         return redirect(url_for('secrets', user_id=new_user.id))
 
     return render_template("register.html")
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+
+    if request.method == 'POST':
+        user: User = db.session.execute(db.select(User).where(User.email == request.form.get('email'))).scalar()
+
+        if check_password_hash(user.password, request.form.get('password')):
+            login_user(user)
+
+            return redirect(url_for('secrets', user_id=user.id))
+
     return render_template("login.html")
 
 
 @app.route('/secrets')
+@login_required
 def secrets():
     user = db.get_or_404(User, request.args.get('user_id'))
 
@@ -72,11 +96,14 @@ def secrets():
 
 
 @app.route('/logout')
+@login_required
 def logout():
-    pass
+    logout_user()
+    return redirect(url_for('home'))
 
 
 @app.route('/download')
+@login_required
 def download():
     return send_from_directory(app.config['UPLOAD_FOLDER'], 'cheat_sheet.pdf')
 
