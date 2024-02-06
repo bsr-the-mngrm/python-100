@@ -53,7 +53,9 @@ class BlogPost(db.Model):
     # Create Foreign Key, "users.id" the users refers to the tablename of User.
     author_id: Mapped[int] = mapped_column(db.ForeignKey('users.id'))
     # Create reference to the User object. The "posts" refers to the posts property in the User class.
-    author: Mapped["User"] = relationship(back_populates="posts")
+    author: Mapped["User"] = relationship("User", back_populates="posts")
+    # ***************Parent Relationship*************#
+    comments: Mapped[list["Comment"]] = relationship("Comment", back_populates="blog_post")
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
 
 
@@ -66,7 +68,24 @@ class User(UserMixin, db.Model):
     password: Mapped[str] = mapped_column(String(255), nullable=False)
     # This will act like a List of BlogPost objects attached to each User.
     # The "author" refers to the author property in the BlogPost class.
-    posts: Mapped[list["BlogPost"]] = relationship(back_populates='author')
+    posts: Mapped[list["BlogPost"]] = relationship("BlogPost", back_populates='author')
+    # *******Add parent relationship*******#
+    # "comment_author" refers to the comment_author property in the Comment class.
+    comments: Mapped[list["Comment"]] = relationship("Comment", back_populates='comment_author')
+
+
+class Comment(db.Model):
+    __tablename__ = "comments"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    text: Mapped[str] = mapped_column(String(1023), nullable=False)
+    # *******Add child relationship*******#
+    # "users.id" The users refers to the tablename of the Users class.
+    # "comments" refers to the comments property in the User class.
+    comment_author_id: Mapped[int] = mapped_column(db.ForeignKey('users.id'))
+    comment_author: Mapped["User"] = relationship("User", back_populates='comments')
+    # ***************Child Relationship*************#
+    blog_post_id: Mapped[int] = mapped_column(db.ForeignKey('blog_posts.id'))
+    blog_post: Mapped["BlogPost"] = relationship("BlogPost", back_populates='comments')
 
 
 with app.app_context():
