@@ -52,11 +52,13 @@ with app.app_context():
 # FLASK APPLICATION ROUTES
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template("index.html", logged_in=current_user.is_authenticated)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
 
     if request.method == 'POST':
         try:
@@ -70,16 +72,18 @@ def register():
 
             login_user(new_user)
 
-            return redirect(url_for('secrets', user_id=new_user.id))
+            return redirect(url_for('secrets'))
         except IntegrityError:
             flash("You've already signed up with that email. Login instead of registering.")
             return redirect(url_for('login'))
 
-    return render_template("register.html")
+    return render_template("register.html", logged_in=current_user.is_authenticated)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
 
     if request.method == 'POST':
         user: User = db.session.execute(db.select(User).where(User.email == request.form.get('email'))).scalar()
@@ -88,23 +92,20 @@ def login():
             if check_password_hash(user.password, request.form.get('password')):
                 login_user(user)
 
-                return redirect(url_for('secrets', user_id=user.id))
+                return redirect(url_for('secrets'))
         else:
             flash('Invalid credential(s)', 'error')
 
-    return render_template("login.html")
+    return render_template("login.html", logged_in=current_user.is_authenticated)
 
 
 @app.route('/secrets')
 @login_required
 def secrets():
-    user = db.get_or_404(User, request.args.get('user_id'))
-
-    return render_template("secrets.html", username=user.name)
+    return render_template("secrets.html", username=current_user.name, logged_in=True)
 
 
 @app.route('/logout')
-@login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
