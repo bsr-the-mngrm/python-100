@@ -32,6 +32,18 @@ def load_user(user_id):
     return db.get_or_404(User, user_id)
 
 
+# Configure Flask Gravatar
+# For adding profile images to the comment section
+gravatar = Gravatar(app,
+                    size=100,
+                    rating='g',
+                    default='retro',
+                    force_default=False,
+                    force_lower=False,
+                    use_ssl=False,
+                    base_url=None)
+
+
 # DATABASE SETUP
 class Base(DeclarativeBase):
     pass
@@ -154,10 +166,23 @@ def get_all_posts():
 
 
 # TODO: Allow logged-in users to comment on posts
-@app.route("/post/<int:post_id>")
+@app.route("/post/<int:post_id>", methods=['GET', 'POST'])
 def show_post(post_id):
     requested_post = db.get_or_404(BlogPost, post_id)
     comment_form = CommentForm()
+
+    if comment_form.validate_on_submit():
+        if isinstance(current_user, AnonymousUserMixin):
+            flash("To comment on blog posts you have to login!", "flash")
+            return redirect(url_for('login'))
+        else:
+            new_comment = Comment(
+                text=comment_form.comment_text.data,
+                comment_author_id=current_user.id,
+                blog_post_id=post_id
+            )
+            db.session.add(new_comment)
+            db.session.commit()
 
     return render_template("post.html", post=requested_post, current_user=current_user, form=comment_form)
 
@@ -236,4 +261,4 @@ def contact():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5002)
+    app.run(debug=True, port=5001)
