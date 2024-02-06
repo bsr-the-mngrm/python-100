@@ -164,8 +164,4 @@ downloads/
 .data/
 .venv/
 
-bootstrap5/
-bootstrap.css
-bootstrap.min.css
-
 *.db
