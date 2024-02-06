@@ -6,12 +6,13 @@ from flask_gravatar import Gravatar
 from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy import Integer, String, Text
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 from os import getenv
-from forms import CreatePostForm
+from forms import CreatePostForm, RegisterForm
 
 load_dotenv()
 
@@ -46,7 +47,13 @@ class BlogPost(db.Model):
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
 
 
-# TODO: Create a User table for all your registered users. 
+# TODO: Create a User table for all your registered users.
+class User(db.Model):
+    __tablename__ = "users"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(127), nullable=False)
+    email: Mapped[str] = mapped_column(String(127), unique=True, nullable=False)
+    password: Mapped[str] = mapped_column(String(255), nullable=False)
 
 
 with app.app_context():
@@ -55,9 +62,26 @@ with app.app_context():
 
 # FLASK APPLICATION ROUTES
 # TODO: Use Werkzeug to hash the user's password when creating a new user.
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template("register.html")
+
+    register_form = RegisterForm()
+
+    if register_form.validate_on_submit():
+        try:
+            new_user = User(
+                name=register_form.name.data,
+                email=register_form.email.data,
+                password=generate_password_hash(register_form.password.data, method="scrypt", salt_length=8)
+            )
+            db.session.add(new_user)
+            db.session.commit()
+
+            return redirect(url_for('get_all_posts'))
+        except IntegrityError:
+            flash("Already signed up.", "error")
+
+    return render_template("register.html", form=register_form)
 
 
 # TODO: Retrieve a user from the database based on their email. 
